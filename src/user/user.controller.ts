@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   UsePipes,
@@ -11,10 +10,12 @@ import {
   ParseUUIDPipe,
   SerializeOptions,
   Put,
+  Res,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-user.dto';
+import { Response } from 'express';
 
 @Controller('/api/user')
 export class UserController {
@@ -51,7 +52,7 @@ export class UserController {
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseUUIDPipe) id: string) {
-    return this.userService.remove(id);
+  remove(@Param('id', ParseUUIDPipe) id: string, @Res() res: Response) {
+    return this.userService.remove(id, res);
   }
 }

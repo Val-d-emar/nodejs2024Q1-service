@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-user.dto';
 import { validate } from 'uuid';
+import { Response } from 'express';
 
 @Injectable()
 export class UserService {
@@ -66,10 +67,31 @@ export class UserService {
       throw error;
     }
     user.password = dto.newPassword;
+    user.version++;
+    user.updatedAt = Date.now();
     return user.out();
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} user`;
+  remove(id: string, res: Response) {
+    // return `This action removes a #${id} user`;
+    if (!validate(id)) {
+      const error = new HttpException(
+        'userId is invalid (not uuid)',
+        HttpStatus.BAD_REQUEST,
+      );
+      throw error;
+    }
+    const index = this.users.findIndex((user) => user.id === id);
+    if (index === -1) {
+      const error = new HttpException(
+        "record with id === userId doesn't exist",
+        HttpStatus.NOT_FOUND,
+      );
+      throw error;
+    }
+    this.users.splice(index, 1);
+    // res.sendStatus(204);
+    res.status(HttpStatus.NO_CONTENT).send();
+    return; //{ message: 'The user has been deleted' };
   }
 }
