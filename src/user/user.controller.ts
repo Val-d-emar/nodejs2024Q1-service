@@ -17,7 +17,7 @@ import { UserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-user.dto';
 import { Response } from 'express';
 
-@Controller('/api/user')
+@Controller('/user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
