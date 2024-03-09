@@ -4,9 +4,13 @@ import { UpdateArtistDto } from './dto/update-artist.dto';
 import { Artist } from './entities/artist.entity';
 import { validate } from 'uuid';
 import { TrackService } from 'src/track/track.service';
+import { AlbumService } from 'src/album/album.service';
 @Injectable()
 export class ArtistService {
-  constructor(private readonly trackService: TrackService) {}
+  constructor(
+    private readonly trackService: TrackService,
+    private readonly albumService: AlbumService,
+  ) {}
   private readonly artists: Artist[] = [];
   create(createArtistDto: CreateArtistDto) {
     // return 'This action adds a new artist';
@@ -83,6 +87,11 @@ export class ArtistService {
     this.trackService.findAll().forEach((track) => {
       if (track.artistId === id) {
         track.update({ artistId: null });
+      }
+    });
+    this.albumService.findAll().forEach((album) => {
+      if (album.artistId === id) {
+        album.update({ artistId: null });
       }
     });
     return;
