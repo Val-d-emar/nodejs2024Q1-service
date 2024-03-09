@@ -15,12 +15,8 @@ export class UserDto {
   updatedAt: number;
   out() {
     const obj = new UserDto(this);
-    obj.id = this.id;
-    obj.login = this.login;
+    Object.assign(obj, this);
     obj.password = undefined;
-    obj.version = this.version;
-    obj.createdAt = this.createdAt;
-    obj.updatedAt = this.updatedAt;
     return obj;
   }
   constructor(obj?: UserDto) {

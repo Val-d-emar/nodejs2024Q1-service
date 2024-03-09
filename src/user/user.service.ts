@@ -11,12 +11,12 @@ export class UserService {
     // return 'This action adds a new user';
     this.users.push(new UserDto(dto));
     const user = this.users.at(-1);
-    // user.password = undefined;
     return user.out();
   }
 
   findAll() {
     // return `This action returns all user`;
+    // return this.users;
     const usersOut = [];
     this.users.forEach((user) => usersOut.push(user.out()));
     return usersOut;
@@ -90,8 +90,7 @@ export class UserService {
       throw error;
     }
     this.users.splice(index, 1);
-    // res.sendStatus(204);
     res.status(HttpStatus.NO_CONTENT).send();
-    return; //{ message: 'The user has been deleted' };
+    return;
   }
 }
