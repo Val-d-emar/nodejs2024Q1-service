@@ -4,10 +4,14 @@ import { UpdateAlbumDto } from './dto/update-album.dto';
 import { Album } from './entities/album.entity';
 import { validate } from 'uuid';
 import { TrackService } from 'src/track/track.service';
+import { FavsService } from 'src/favs/favs.service';
 
 @Injectable()
 export class AlbumService {
-  constructor(private readonly trackService: TrackService) {}
+  constructor(
+    private readonly trackService: TrackService,
+    // private readonly favsService: FavsService,
+  ) {}
   private readonly albums: Album[] = [];
   create(createAlbumDto: CreateAlbumDto) {
     // return 'This action adds a new album';
@@ -80,12 +84,16 @@ export class AlbumService {
       throw error;
     }
     this.albums.splice(index, 1);
-    ////////////add checking?
     this.trackService.findAll().forEach((track) => {
       if (track.albumId === id) {
         track.update({ albumId: null });
       }
     });
+    // // const favs = this.favsService.getFavs();
+    // const idx = favs.albums.indexOf(id);
+    // if (index > -1) {
+    //   favs.albums.splice(idx, 1);
+    // }
     return;
   }
 }

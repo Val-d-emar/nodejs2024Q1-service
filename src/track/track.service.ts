@@ -3,9 +3,11 @@ import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { validate } from 'uuid';
 import { Track } from './entities/track.entity';
+import { FavsService } from 'src/favs/favs.service';
 
 @Injectable()
 export class TrackService {
+  // constructor(private readonly favsService: FavsService) {}
   private readonly tracks: Track[] = [];
   create(dto: CreateTrackDto) {
     // return 'This action adds a new track';
@@ -78,7 +80,11 @@ export class TrackService {
       throw error;
     }
     this.tracks.splice(index, 1);
-    ////////////add checking?
+    // const favs = this.favsService.getFavs();
+    // const idx = favs.tracks.indexOf(id);
+    // if (index > -1) {
+    //   favs.tracks.splice(idx, 1);
+    // }
     return;
   }
 }
