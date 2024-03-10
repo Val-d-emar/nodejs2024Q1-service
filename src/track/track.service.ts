@@ -9,9 +9,7 @@ import { DB } from 'src/db/db.service';
 @Injectable()
 @Global()
 export class TrackService {
-  // constructor(private readonly favsService: FavsService) {}
   constructor(private readonly db: DB) {}
-  // private readonly tracks: Track[] = [];
   create(dto: CreateTrackDto) {
     // return 'This action adds a new track';
     this.db.tracks.push(new Track(dto));

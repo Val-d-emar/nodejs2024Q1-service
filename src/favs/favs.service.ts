@@ -1,8 +1,5 @@
 import { Global, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Favorites } from './entities/fav.entity';
-// import { AlbumService } from 'src/album/album.service';
-// import { ArtistService } from 'src/artist/artist.service';
-// import { TrackService } from 'src/track/track.service';
 import { validate } from 'uuid';
 import { DB } from 'src/db/db.service';
 
@@ -10,12 +7,6 @@ import { DB } from 'src/db/db.service';
 @Global()
 export class FavsService {
   constructor(private readonly db: DB) {}
-  // constructor(
-  //   private readonly trackService: TrackService,
-  //   private readonly albumService: AlbumService,
-  //   private readonly artistService: ArtistService,
-  // ) {}
-  // private readonly favs = new Fav();
 
   findAll() {
     // return `This action returns all favs`;

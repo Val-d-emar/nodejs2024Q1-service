@@ -17,7 +17,7 @@ export class User {
     return obj;
   }
   constructor(obj?: object) {
-    Object.assign(this, obj);
+    obj ? Object.assign(this, obj) : null;
     this.id = v4();
     this.version = 1;
     this.createdAt = Date.now();
