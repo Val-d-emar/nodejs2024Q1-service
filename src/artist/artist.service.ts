@@ -1,18 +1,22 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Global, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
 import { Artist } from './entities/artist.entity';
 import { validate } from 'uuid';
-import { TrackService } from 'src/track/track.service';
-import { AlbumService } from 'src/album/album.service';
-import { FavsService } from 'src/favs/favs.service';
+// import { TrackService } from 'src/track/track.service';
+// import { AlbumService } from 'src/album/album.service';
+// import { FavsService } from 'src/favs/favs.service';
+import { DB } from 'src/db/db.service';
 @Injectable()
+@Global()
 export class ArtistService {
-  constructor(
-    private readonly trackService: TrackService,
-    private readonly albumService: AlbumService,
-    // private readonly favsService: FavsService,
-  ) {}
+  constructor(private readonly db: DB) {}
+  // constructor(
+  //   private readonly db: DB,
+  // private readonly trackService: TrackService,
+  // private readonly albumService: AlbumService,
+  // ) // private readonly favsService: FavsService,
+  // {}
   private readonly artists: Artist[] = [];
   create(createArtistDto: CreateArtistDto) {
     // return 'This action adds a new artist';
@@ -85,22 +89,23 @@ export class ArtistService {
       throw error;
     }
     this.artists.splice(index, 1);
-    ////////////add checking?
-    this.trackService.findAll().forEach((track) => {
+
+    this.db.tracks.forEach((track) => {
       if (track.artistId === id) {
         track.update({ artistId: null });
       }
     });
-    this.albumService.findAll().forEach((album) => {
+
+    this.db.albums.forEach((album) => {
       if (album.artistId === id) {
         album.update({ artistId: null });
       }
     });
-    // const favs = this.favsService.getFavs();
-    // const idx = favs.artists.indexOf(id);
-    // if (index > -1) {
-    //   favs.artists.splice(idx, 1);
-    // }
+
+    const idx = this.db.favs.artists.indexOf(id);
+    if (index > -1) {
+      this.db.favs.artists.splice(idx, 1);
+    }
     return;
   }
 }

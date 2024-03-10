@@ -1,23 +1,26 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Global, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { validate } from 'uuid';
 import { Track } from './entities/track.entity';
 import { FavsService } from 'src/favs/favs.service';
+import { DB } from 'src/db/db.service';
 
 @Injectable()
+@Global()
 export class TrackService {
   // constructor(private readonly favsService: FavsService) {}
-  private readonly tracks: Track[] = [];
+  constructor(private readonly db: DB) {}
+  // private readonly tracks: Track[] = [];
   create(dto: CreateTrackDto) {
     // return 'This action adds a new track';
-    this.tracks.push(new Track(dto));
-    return this.tracks.at(-1);
+    this.db.tracks.push(new Track(dto));
+    return this.db.tracks.at(-1);
   }
 
   findAll() {
     // return `This action returns all track`;
-    return this.tracks;
+    return this.db.tracks;
   }
 
   findOne(id: string) {
@@ -29,7 +32,7 @@ export class TrackService {
       );
       throw error;
     }
-    const track = this.tracks.find((tracks) => tracks.id === id);
+    const track = this.db.tracks.find((tracks) => tracks.id === id);
     if (!track) {
       const error = new HttpException(
         "record with id === trackId doesn't exist",
@@ -49,7 +52,7 @@ export class TrackService {
       );
       throw error;
     }
-    const track = this.tracks.find((track) => track.id === id);
+    const track = this.db.tracks.find((track) => track.id === id);
     if (!track) {
       const error = new HttpException(
         "record with id === trackId doesn't exist",
@@ -71,7 +74,7 @@ export class TrackService {
       );
       throw error;
     }
-    const index = this.tracks.findIndex((track) => track.id === id);
+    const index = this.db.tracks.findIndex((track) => track.id === id);
     if (index === -1) {
       const error = new HttpException(
         "record with id === trackId doesn't exist",
@@ -79,12 +82,12 @@ export class TrackService {
       );
       throw error;
     }
-    this.tracks.splice(index, 1);
-    // const favs = this.favsService.getFavs();
-    // const idx = favs.tracks.indexOf(id);
-    // if (index > -1) {
-    //   favs.tracks.splice(idx, 1);
-    // }
+    this.db.tracks.splice(index, 1);
+
+    const idx = this.db.favs.tracks.indexOf(id);
+    if (index > -1) {
+      this.db.favs.tracks.splice(idx, 1);
+    }
     return;
   }
 }

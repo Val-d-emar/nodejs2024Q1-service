@@ -1,41 +1,38 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Fav, Favorites } from './entities/fav.entity';
-import { AlbumService } from 'src/album/album.service';
-import { ArtistService } from 'src/artist/artist.service';
-import { TrackService } from 'src/track/track.service';
+import { Global, HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Favorites } from './entities/fav.entity';
+// import { AlbumService } from 'src/album/album.service';
+// import { ArtistService } from 'src/artist/artist.service';
+// import { TrackService } from 'src/track/track.service';
 import { validate } from 'uuid';
+import { DB } from 'src/db/db.service';
 
 @Injectable()
+@Global()
 export class FavsService {
-  constructor(
-    private readonly trackService: TrackService,
-    private readonly albumService: AlbumService,
-    private readonly artistService: ArtistService,
-  ) {}
-  private readonly favs = new Fav();
+  constructor(private readonly db: DB) {}
+  // constructor(
+  //   private readonly trackService: TrackService,
+  //   private readonly albumService: AlbumService,
+  //   private readonly artistService: ArtistService,
+  // ) {}
+  // private readonly favs = new Fav();
 
   findAll() {
     // return `This action returns all favs`;
     const res = new Favorites();
-    this.favs.albums.forEach((id) => {
-      res.albums.push(
-        this.albumService.findAll().find((album) => album.id === id),
-      );
+    this.db.favs.albums.forEach((id) => {
+      res.albums.push(this.db.albums.find((album) => album.id === id));
     });
-    this.favs.artists.forEach((id) => {
-      res.artists.push(
-        this.artistService.findAll().find((artist) => artist.id === id),
-      );
+    this.db.favs.artists.forEach((id) => {
+      res.artists.push(this.db.artists.find((artist) => artist.id === id));
     });
-    this.favs.tracks.forEach((id) => {
-      res.tracks.push(
-        this.trackService.findAll().find((track) => track.id === id),
-      );
+    this.db.favs.tracks.forEach((id) => {
+      res.tracks.push(this.db.tracks.find((track) => track.id === id));
     });
     return res;
   }
   getFavs() {
-    return this.favs;
+    return this.db.favs;
   }
   albumAdd(id: string) {
     // return `This action updates a #${id} fav`;
@@ -46,7 +43,7 @@ export class FavsService {
       );
       throw error;
     }
-    const album = this.albumService.findAll().find((o) => o.id === id);
+    const album = this.db.albums.find((o) => o.id === id);
     if (!album) {
       const error = new HttpException(
         "record with id === albumId doesn't exist",
@@ -54,7 +51,7 @@ export class FavsService {
       );
       throw error;
     }
-    this.favs.albumAdd(id);
+    this.db.favs.albumAdd(id);
     return;
   }
 
@@ -67,14 +64,14 @@ export class FavsService {
       );
       throw error;
     }
-    if (!this.favs.albums.includes(id)) {
+    if (!this.db.favs.albums.includes(id)) {
       const error = new HttpException(
         "record with id === albumId doesn't exist",
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
       throw error;
     }
-    this.favs.albumDel(id);
+    this.db.favs.albumDel(id);
   }
   trackAdd(id: string) {
     // return `This action updates a #${id} fav`;
@@ -85,7 +82,7 @@ export class FavsService {
       );
       throw error;
     }
-    const track = this.trackService.findAll().find((o) => o.id === id);
+    const track = this.db.tracks.find((o) => o.id === id);
     if (!track) {
       const error = new HttpException(
         "record with id === trackId doesn't exist",
@@ -93,7 +90,7 @@ export class FavsService {
       );
       throw error;
     }
-    this.favs.trackAdd(id);
+    this.db.favs.trackAdd(id);
     return;
   }
 
@@ -106,14 +103,14 @@ export class FavsService {
       );
       throw error;
     }
-    if (!this.favs.tracks.includes(id)) {
+    if (!this.db.favs.tracks.includes(id)) {
       const error = new HttpException(
         "record with id === trackId doesn't exist",
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
       throw error;
     }
-    this.favs.trackDel(id);
+    this.db.favs.trackDel(id);
   }
 
   artistAdd(id: string) {
@@ -125,7 +122,7 @@ export class FavsService {
       );
       throw error;
     }
-    const artist = this.artistService.findAll().find((o) => o.id === id);
+    const artist = this.db.artists.find((o) => o.id === id);
     if (!artist) {
       const error = new HttpException(
         "record with id === artistId doesn't exist",
@@ -133,7 +130,7 @@ export class FavsService {
       );
       throw error;
     }
-    this.favs.artistAdd(id);
+    this.db.favs.artistAdd(id);
     return;
   }
 
@@ -146,13 +143,13 @@ export class FavsService {
       );
       throw error;
     }
-    if (!this.favs.artists.includes(id)) {
+    if (!this.db.favs.artists.includes(id)) {
       const error = new HttpException(
         "record with id === artistId doesn't exist",
         HttpStatus.UNPROCESSABLE_ENTITY,
       );
       throw error;
     }
-    this.favs.artistDel(id);
+    this.db.favs.artistDel(id);
   }
 }

@@ -1,10 +1,10 @@
 import { Global, Module } from '@nestjs/common';
 import { TrackService } from './track.service';
 import { TrackController } from './track.controller';
-@Global()
+// @Global()
 @Module({
   controllers: [TrackController],
   providers: [TrackService],
-  exports: [TrackService],
+  // exports: [TrackService],
 })
 export class TrackModule {}

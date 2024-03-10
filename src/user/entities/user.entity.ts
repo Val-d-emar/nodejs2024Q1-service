@@ -1,12 +1,26 @@
-import { TUser } from 'src/db/db';
-import { IUser } from 'src/db/ifaces';
-import { Exclude, Expose } from 'class-transformer';
+import { IsString } from 'class-validator';
+import { v4 } from 'uuid';
 
-// export class User extends TUser implements IUser {
-//   id: string;
-//   login: string;
-//   password: string;
-//   version: number;
-//   createdAt: number;
-//   updatedAt: number;
-// }
+export class User {
+  id: string;
+  @IsString()
+  login: string;
+  @IsString()
+  password: string;
+  version: number;
+  createdAt: number;
+  updatedAt: number;
+  out() {
+    const obj = new User(this);
+    Object.assign(obj, this);
+    obj.password = undefined;
+    return obj;
+  }
+  constructor(obj?: object) {
+    Object.assign(this, obj);
+    this.id = v4();
+    this.version = 1;
+    this.createdAt = Date.now();
+    this.updatedAt = Date.now();
+  }
+}

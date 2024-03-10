@@ -1,16 +1,19 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { UserDto } from './dto/create-user.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-user.dto';
 import { validate } from 'uuid';
 import { Response } from 'express';
+import { User } from './entities/user.entity';
+import { DB } from 'src/db/db.service';
 
 @Injectable()
 export class UserService {
-  private readonly users: UserDto[] = [];
-  create(dto: UserDto) {
+  constructor(private readonly db: DB) {}
+  // private readonly users: UserDto[] = [];
+  create(dto: CreateUserDto) {
     // return 'This action adds a new user';
-    this.users.push(new UserDto(dto));
-    const user = this.users.at(-1);
+    this.db.users.push(new User(dto));
+    const user = this.db.users.at(-1);
     return user.out();
   }
 
@@ -18,7 +21,7 @@ export class UserService {
     // return `This action returns all user`;
     // return this.users;
     const usersOut = [];
-    this.users.forEach((user) => usersOut.push(user.out()));
+    this.db.users.forEach((user) => usersOut.push(user.out()));
     return usersOut;
   }
 
@@ -31,7 +34,7 @@ export class UserService {
       );
       throw error;
     }
-    const user = this.users.find((user) => user.id === id);
+    const user = this.db.users.find((user) => user.id === id);
     if (!user) {
       const error = new HttpException(
         "record with id === userId doesn't exist",
@@ -51,7 +54,7 @@ export class UserService {
       );
       throw error;
     }
-    const user = this.users.find((user) => user.id === id);
+    const user = this.db.users.find((user) => user.id === id);
     if (!user) {
       const error = new HttpException(
         "record with id === userId doesn't exist",
@@ -81,7 +84,7 @@ export class UserService {
       );
       throw error;
     }
-    const index = this.users.findIndex((user) => user.id === id);
+    const index = this.db.users.findIndex((user) => user.id === id);
     if (index === -1) {
       const error = new HttpException(
         "record with id === userId doesn't exist",
@@ -89,7 +92,7 @@ export class UserService {
       );
       throw error;
     }
-    this.users.splice(index, 1);
+    this.db.users.splice(index, 1);
     res.status(HttpStatus.NO_CONTENT).send();
     return;
   }

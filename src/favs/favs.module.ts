@@ -1,10 +1,10 @@
 import { Global, Module } from '@nestjs/common';
 import { FavsService } from './favs.service';
 import { FavsController } from './favs.controller';
-@Global()
+// @Global()
 @Module({
   controllers: [FavsController],
   providers: [FavsService],
-  exports: [FavsService],
+  // exports: [FavsService],
 })
 export class FavsModule {}

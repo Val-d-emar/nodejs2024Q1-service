@@ -13,7 +13,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { UserDto } from './dto/create-user.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-user.dto';
 import { Response } from 'express';
 
@@ -26,7 +26,7 @@ export class UserController {
   })
   @Post()
   @UsePipes(new ValidationPipe())
-  create(@Body() createUserDto: UserDto) {
+  create(@Body() createUserDto: CreateUserDto) {
     const user = this.userService.create(createUserDto);
     return user;
   }
