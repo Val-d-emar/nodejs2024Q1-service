@@ -9,24 +9,23 @@ import { DB } from 'src/db/db.service';
 @Injectable()
 export class UserService {
   constructor(private readonly db: DB) {}
-  // private readonly users: UserDto[] = [];
+
   create(dto: CreateUserDto) {
-    // return 'This action adds a new user';
+    // 'This action adds a new user';
     this.db.users.push(new User(dto));
     const user = this.db.users.at(-1);
     return user.out();
   }
 
   findAll() {
-    // return `This action returns all user`;
-    // return this.users;
+    // `This action returns all user`;
     const usersOut = [];
     this.db.users.forEach((user) => usersOut.push(user.out()));
     return usersOut;
   }
 
   findOne(id: string) {
-    // return `This action returns a #${id} user`;findOne(id: string) {
+    // `This action returns a #${id} user`
     if (!validate(id)) {
       const error = new HttpException(
         'userId is invalid (not uuid)',
@@ -46,7 +45,7 @@ export class UserService {
   }
 
   update(id: string, dto: UpdatePasswordDto) {
-    // return `This action updates a #${id} user`;
+    // `This action updates a #${id} user`;
     if (!validate(id)) {
       const error = new HttpException(
         'userId is invalid (not uuid)',
@@ -76,7 +75,7 @@ export class UserService {
   }
 
   remove(id: string, res: Response) {
-    // return `This action removes a #${id} user`;
+    // `This action removes a #${id} user`;
     if (!validate(id)) {
       const error = new HttpException(
         'userId is invalid (not uuid)',

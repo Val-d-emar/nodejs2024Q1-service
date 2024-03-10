@@ -10,18 +10,18 @@ export class ArtistService {
   constructor(private readonly db: DB) {}
 
   create(createArtistDto: CreateArtistDto) {
-    // return 'This action adds a new artist';
+    // 'This action adds a new artist';
     this.db.artists.push(new Artist(createArtistDto));
     return this.db.artists.at(-1);
   }
 
   findAll() {
-    // return `This action returns all artist`;
+    // `This action returns all artist`;
     return this.db.artists;
   }
 
   findOne(id: string) {
-    // return `This action returns a #${id} artist`;
+    // `This action returns a #${id} artist`;
     if (!validate(id)) {
       const error = new HttpException(
         'artistId is invalid (not uuid)',
@@ -41,7 +41,7 @@ export class ArtistService {
   }
 
   update(id: string, updateArtistDto: UpdateArtistDto) {
-    // return `This action updates a #${id} artist`;
+    // `This action updates a #${id} artist`;
     if (!validate(id)) {
       const error = new HttpException(
         'artistId is invalid (not uuid)',
@@ -57,13 +57,12 @@ export class ArtistService {
       );
       throw error;
     }
-    ////////////add checking
     artist.update(updateArtistDto);
     return artist;
   }
 
   remove(id: string) {
-    // return `This action removes a #${id} artist`;
+    // `This action removes a #${id} artist`;
     if (!validate(id)) {
       const error = new HttpException(
         'artistId is invalid (not uuid)',

@@ -9,7 +9,7 @@ export class FavsService {
   constructor(private readonly db: DB) {}
 
   findAll() {
-    // return `This action returns all favs`;
+    // `This action returns all favs`;
     const res = new Favorites();
     this.db.favs.albums.forEach((id) => {
       res.albums.push(this.db.albums.find((album) => album.id === id));
@@ -26,7 +26,7 @@ export class FavsService {
     return this.db.favs;
   }
   albumAdd(id: string) {
-    // return `This action updates a #${id} fav`;
+    // `This action updates a #${id} fav`;
     if (!validate(id)) {
       const error = new HttpException(
         'albumId is invalid (not uuid)',
@@ -47,7 +47,7 @@ export class FavsService {
   }
 
   albumDel(id: string) {
-    // return `This action removes a #${id} fav`;
+    // `This action removes a #${id} fav`;
     if (!validate(id)) {
       const error = new HttpException(
         'albumId is invalid (not uuid)',
@@ -65,7 +65,7 @@ export class FavsService {
     this.db.favs.albumDel(id);
   }
   trackAdd(id: string) {
-    // return `This action updates a #${id} fav`;
+    // `This action updates a #${id} fav`;
     if (!validate(id)) {
       const error = new HttpException(
         'trackId is invalid (not uuid)',
@@ -86,7 +86,7 @@ export class FavsService {
   }
 
   trackDel(id: string) {
-    // return `This action removes a #${id} fav`;
+    // `This action removes a #${id} fav`;
     if (!validate(id)) {
       const error = new HttpException(
         'trackId is invalid (not uuid)',
@@ -105,7 +105,7 @@ export class FavsService {
   }
 
   artistAdd(id: string) {
-    // return `This action updates a #${id} fav`;
+    // `This action updates a #${id} fav`;
     if (!validate(id)) {
       const error = new HttpException(
         'artistId is invalid (not uuid)',
@@ -126,7 +126,7 @@ export class FavsService {
   }
 
   artistDel(id: string) {
-    // return `This action removes a #${id} fav`;
+    // `This action removes a #${id} fav`;
     if (!validate(id)) {
       const error = new HttpException(
         'artistId is invalid (not uuid)',

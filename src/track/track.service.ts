@@ -11,18 +11,18 @@ import { DB } from 'src/db/db.service';
 export class TrackService {
   constructor(private readonly db: DB) {}
   create(dto: CreateTrackDto) {
-    // return 'This action adds a new track';
+    // 'This action adds a new track';
     this.db.tracks.push(new Track(dto));
     return this.db.tracks.at(-1);
   }
 
   findAll() {
-    // return `This action returns all track`;
+    // `This action returns all track`;
     return this.db.tracks;
   }
 
   findOne(id: string) {
-    // return `This action returns a #${id} track`;
+    // `This action returns a #${id} track`;
     if (!validate(id)) {
       const error = new HttpException(
         'trackId is invalid (not uuid)',
@@ -42,7 +42,7 @@ export class TrackService {
   }
 
   update(id: string, dto: UpdateTrackDto) {
-    // return `This action updates a #${id} track`;
+    // `This action updates a #${id} track`;
     if (!validate(id)) {
       const error = new HttpException(
         'trackId is invalid (not uuid)',
@@ -58,13 +58,13 @@ export class TrackService {
       );
       throw error;
     }
-    ////////////add checking
+
     track.update(dto);
     return track;
   }
 
   remove(id: string) {
-    // return `This action removes a #${id} track`;
+    // `This action removes a #${id} track`;
     if (!validate(id)) {
       const error = new HttpException(
         'trackId is invalid (not uuid)',
