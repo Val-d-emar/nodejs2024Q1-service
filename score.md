@@ -1,6 +1,8 @@
 1. Task: [REST Service](https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/rest-service/assignment.md)
-2. Done 06.03.2024 / deadline 12.03.2024
-3. Score: 760 / 760
+1. Screenshots:
+![tests](./doc/screenshots/1.png)  
+1. Done 06.03.2024 / deadline 12.03.2024
+1. Score: 760 / 760
 
 # Scoring: REST Service
 
@@ -10,9 +12,9 @@
 - [X] **+10** The application code that worked with `Users` instance divided into modules according to to its purpose and Nest.js architecture conventions (work with request and response in controller, business logic in service, etc.)
 - [X] **+10** The application code that worked with `Tracks` instance divided into modules according to to its purpose and Nest.js architecture conventions (work with request and response in controller, business logic in service, etc.)
 - [X] **+10** The application code that worked with `Albums` instance divided into modules according to to its purpose and Nest.js architecture conventions (work with request and response in controller, business logic in service, etc.)
-- [ ] **+10** The application code that worked with `Artists` instance divided into modules according to to its purpose and Nest.js architecture conventions (work with request and response in controller, business logic in service, etc.)
-- [ ] **+10** The application code that worked with `Favorites` instance divided into modules according to to its purpose and Nest.js architecture conventions (work with request and response in controller, business logic in service, etc.)
-- [ ] **+10** For each successfully passed test
+- [X] **+10** The application code that worked with `Artists` instance divided into modules according to to its purpose and Nest.js architecture conventions (work with request and response in controller, business logic in service, etc.)
+- [X] **+10** The application code that worked with `Favorites` instance divided into modules according to to its purpose and Nest.js architecture conventions (work with request and response in controller, business logic in service, etc.)
+- [X] **+10** For each successfully passed test
 
 ## Advanced Scope
 
