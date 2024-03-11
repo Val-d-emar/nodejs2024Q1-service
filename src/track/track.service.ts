@@ -3,7 +3,6 @@ import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { validate } from 'uuid';
 import { Track } from './entities/track.entity';
-import { FavsService } from 'src/favs/favs.service';
 import { DB } from 'src/db/db.service';
 
 @Injectable()
