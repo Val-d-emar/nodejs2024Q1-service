@@ -23,7 +23,7 @@ export class UserService {
 
   findOne(id: string) {
     // `This action returns a #${id} user`
-    return User.findOneId(id);
+    return User.findOneId(id).then((u) => u.out());
   }
 
   update(id: string, dto: UpdatePasswordDto) {

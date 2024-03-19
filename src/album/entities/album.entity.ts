@@ -1,6 +1,7 @@
 import { HttpStatus } from '@nestjs/common';
 import { IsNumber, IsString } from 'class-validator';
 import { appError } from 'src/errors';
+import { Track } from 'src/track/entities/track.entity';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 import { v4 } from 'uuid';
 
@@ -29,43 +30,36 @@ export class Album extends BaseEntity {
       obj['id'] ? (this.id = v4()) : null;
     }
   }
-  update(obj: object) {
+  updateObj(obj: object) {
     if (obj) {
       obj['id'] ? delete obj['id'] : null;
       Object.assign(this, obj);
     }
   }
   static async createDto(dto: object) {
-    const item = new Album(dto);
+    const item = new this(dto);
     return item.save();
   }
   static async findAll() {
-    return Album.find();
+    return this.find();
   }
   static async findOneId(id: string) {
-    return Album.findOneBy({ id }).then((item) => {
-      if (!item) throw appError(this.name, HttpStatus.NOT_FOUND);
+    return this.findOneBy({ id }).then((item) => {
+      if (!item) appError(this.name, HttpStatus.NOT_FOUND);
       return item;
     });
-    // .catch(() => {
-    //   throw appError(this.name, HttpStatus.NOT_FOUND);
-    // });
   }
   static async removeId(id: string) {
-    return Album.findOneBy({ id })
-      .then((item) => item.remove())
-      .catch(() => {
-        throw appError(this.name, HttpStatus.NOT_FOUND);
-      });
+    return this.findOneId(id).then((item) =>
+      item
+        .remove()
+        .then(() => Track.update({ albumId: id }, { albumId: null })),
+    );
   }
-  static async updateId(id: string, dto: object) {
-    return Album.findOneBy({ id })
-      .then((item) => {
-        item.update(dto);
-        return item.save();
-      })
-      .catch(() => {
-        throw appError(this.name, HttpStatus.NOT_FOUND);
-      });
+  static async updateDto(id: string, dto: object) {
+    return this.findOneId(id).then((item) => {
+      item.updateObj(dto);
+      return item.save();
+    });
   }
 }

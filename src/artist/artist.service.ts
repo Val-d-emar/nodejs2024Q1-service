@@ -61,7 +61,7 @@ export class ArtistService {
     // }
     // artist.update(updateArtistDto);
     // return artist;
-    return Artist.updateId(id, updateArtistDto);
+    return Artist.updateDto(id, updateArtistDto);
   }
 
   remove(id: string) {

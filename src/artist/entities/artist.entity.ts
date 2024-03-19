@@ -1,6 +1,8 @@
 import { HttpStatus } from '@nestjs/common';
 import { IsBoolean, IsString } from 'class-validator';
+import { Album } from 'src/album/entities/album.entity';
 import { appError } from 'src/errors';
+import { Track } from 'src/track/entities/track.entity';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 import { v4 } from 'uuid';
 
@@ -26,7 +28,7 @@ export class Artist extends BaseEntity {
       obj['id'] ? (this.id = v4()) : null;
     }
   }
-  update(obj: object) {
+  updateObj(obj: object) {
     if (obj) {
       obj['id'] ? delete obj['id'] : null;
       Object.assign(this, obj);
@@ -41,25 +43,22 @@ export class Artist extends BaseEntity {
   }
   static async findOneId(id: string) {
     return this.findOneBy({ id }).then((item) => {
-      if (!item) throw appError(this.name, HttpStatus.NOT_FOUND);
+      if (!item) appError(this.name, HttpStatus.NOT_FOUND);
       return item;
     });
   }
   static async removeId(id: string) {
-    return this.findOneBy({ id })
-      .then((item) => item.remove())
-      .catch(() => {
-        throw appError(this.name, HttpStatus.NOT_FOUND);
-      });
+    return this.findOneId(id).then((item) =>
+      item
+        .remove()
+        .then(() => Track.update({ artistId: id }, { artistId: null }))
+        .then(() => Album.update({ artistId: id }, { artistId: null })),
+    );
   }
-  static async updateId(id: string, dto: object) {
-    return this.findOneBy({ id })
-      .then((item) => {
-        item.update(dto);
-        return item.save();
-      })
-      .catch(() => {
-        throw appError(this.name, HttpStatus.NOT_FOUND);
-      });
+  static async updateDto(id: string, dto: object) {
+    return this.findOneId(id).then((item) => {
+      item.updateObj(dto);
+      return item.save();
+    });
   }
 }

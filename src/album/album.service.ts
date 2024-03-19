@@ -65,7 +65,7 @@ export class AlbumService {
     // album.update(updateAlbumDto);
     // return album;
 
-    return Album.updateId(id, updateAlbumDto);
+    return Album.updateDto(id, updateAlbumDto);
   }
 
   remove(id: string) {

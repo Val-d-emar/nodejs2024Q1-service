@@ -1,6 +1,7 @@
-import { HttpException, HttpStatus } from '@nestjs/common';
+import { HttpStatus } from '@nestjs/common';
 import { Exclude } from 'class-transformer';
 import { IsNumber, IsString } from 'class-validator';
+import { appError } from 'src/errors';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 import { v4 } from 'uuid';
 
@@ -33,6 +34,7 @@ export class User extends BaseEntity {
   @Column({ type: 'bigint' })
   @IsNumber()
   updatedAt: number;
+
   out() {
     const obj = new User(this);
     Object.assign(obj, this);
@@ -58,54 +60,28 @@ export class User extends BaseEntity {
   static async findAll() {
     return User.find().then((users) => {
       const usersOut: User[] = [];
-      users.forEach((u) => usersOut.push(u.out()));
+      users.forEach((user) => usersOut.push(user.out()));
       return usersOut;
     });
   }
   static async findOneId(id: string) {
-    return User.findOneBy({ id })
-      .then((u) => u.out())
-      .catch((error) => {
-        error = new HttpException(
-          "record with id === userId doesn't exist",
-          HttpStatus.NOT_FOUND,
-        );
-        throw error;
-      });
+    return User.findOneBy({ id }).then((user) => {
+      if (!user) appError(this.name, HttpStatus.NOT_FOUND);
+      return user;
+    });
   }
   static async removeId(id: string) {
-    return User.findOneBy({ id })
-      .then((u) => u.remove())
-      .catch(() => {
-        throw new HttpException(
-          "record with id === userId doesn't exist",
-          HttpStatus.NOT_FOUND,
-        );
-      });
+    return User.findOneId(id).then((user) => user.remove());
   }
   static async updatePassword(id: string, dto: object) {
-    const ErrPasswd = new HttpException(
-      'oldPassword is wrong',
-      HttpStatus.FORBIDDEN,
-    );
-    return User.findOneBy({ id })
-      .then((user) => {
-        if (user.password !== dto['oldPassword']) {
-          throw ErrPasswd;
-        }
-        user.password = dto['newPassword'];
-        user.version++;
-        user.updatedAt = Date.now();
-        return user.save().then((u) => u.out());
-      })
-      .catch((error) => {
-        if (error !== ErrPasswd) {
-          error = new HttpException(
-            "record with id === userId doesn't exist",
-            HttpStatus.NOT_FOUND,
-          );
-        }
-        throw error;
-      });
+    return User.findOneId(id).then((user) => {
+      if (user.password !== dto['oldPassword']) {
+        appError('oldPassword is wrong', HttpStatus.FORBIDDEN);
+      }
+      user.password = dto['newPassword'];
+      user.version++;
+      user.updatedAt = Date.now();
+      return user.save().then((u) => u.out());
+    });
   }
 }
