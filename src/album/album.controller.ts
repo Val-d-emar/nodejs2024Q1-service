@@ -9,13 +9,12 @@ import {
   UsePipes,
   Put,
   ParseUUIDPipe,
-  Res,
   HttpStatus,
+  HttpCode,
 } from '@nestjs/common';
 import { AlbumService } from './album.service';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
-import { Response } from 'express';
 
 @Controller('album')
 export class AlbumController {
@@ -47,9 +46,8 @@ export class AlbumController {
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseUUIDPipe) id: string, @Res() res: Response) {
-    this.albumService.remove(id);
-    res.status(HttpStatus.NO_CONTENT).send();
-    return;
+  @HttpCode(HttpStatus.NO_CONTENT)
+  remove(@Param('id', ParseUUIDPipe) id: string) {
+    return this.albumService.remove(id);
   }
 }

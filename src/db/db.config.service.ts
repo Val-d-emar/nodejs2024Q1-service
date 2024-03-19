@@ -24,7 +24,10 @@ class DbConfigService {
       migrationsTableName: 'migrations_TypeORM',
       // entities: [User],
       // entities: ['src/db/entity/*.entity.ts'],
-      entities: ['dist/user/entities/*.entity{.ts,.js}'],
+      entities: [
+        'dist/user/entities/*.entity{.ts,.js}',
+        'dist/album/entities/*.entity{.ts,.js}',
+      ],
       // migrations: [User],
       // migrations: ['src/db/migration/*.ts'],
       migrations: ['dist/db/migration/*{.ts,.js}'],

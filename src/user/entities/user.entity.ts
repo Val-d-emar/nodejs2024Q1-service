@@ -62,12 +62,6 @@ export class User extends BaseEntity {
       return usersOut;
     });
   }
-  // update(obj: object) {
-  //   if (obj) {
-  //     obj['id'] ? delete obj['id'] : null;
-  //     Object.assign(this, obj);
-  //   }
-  // }
   static async findOneId(id: string) {
     return User.findOneBy({ id })
       .then((u) => u.out())
