@@ -18,9 +18,9 @@ export class Album extends BaseEntity {
   @IsNumber()
   year: number;
 
-  @Column({ type: 'varchar', length: 255, nullable: truetop
- })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   artistId: string | null; // refers to Artist
+
   constructor(obj?: object) {
     super();
     this.id = v4();

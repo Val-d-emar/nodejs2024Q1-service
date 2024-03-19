@@ -27,6 +27,7 @@ class DbConfigService {
       entities: [
         'dist/user/entities/*.entity{.ts,.js}',
         'dist/album/entities/*.entity{.ts,.js}',
+        'dist/artist/entities/*.entity{.ts,.js}',
       ],
       // migrations: [User],
       // migrations: ['src/db/migration/*.ts'],
