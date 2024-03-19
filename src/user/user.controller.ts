@@ -10,12 +10,11 @@ import {
   ParseUUIDPipe,
   SerializeOptions,
   Put,
-  Res,
+  HttpCode,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-user.dto';
-import { Response } from 'express';
 
 @Controller('user')
 export class UserController {
@@ -23,6 +22,7 @@ export class UserController {
 
   @SerializeOptions({
     excludePrefixes: ['password'],
+    enableImplicitConversion: true,
   })
   @Post()
   @UsePipes(new ValidationPipe())
@@ -51,7 +51,8 @@ export class UserController {
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseUUIDPipe) id: string, @Res() res: Response) {
-    return this.userService.remove(id, res);
+  @HttpCode(204)
+  remove(@Param('id', ParseUUIDPipe) id: string) {
+    return this.userService.remove(id);
   }
 }

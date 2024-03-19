@@ -2,6 +2,10 @@
 /dist
 /node_modules
 
+# typeorm
+tmp/
+temp/
+
 # Logs
 logs
 *.log
