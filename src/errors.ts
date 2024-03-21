@@ -11,5 +11,10 @@ export function appError(item: string, status: HttpStatus) {
       throw new HttpException(`${item}Id is invalid (not uuid)`, status);
     case HttpStatus.FORBIDDEN:
       throw new HttpException(`${item}`, status);
+    case HttpStatus.UNPROCESSABLE_ENTITY:
+      throw new HttpException(
+        `record with id === ${item}Id doesn't exist`,
+        status,
+      );
   }
 }
