@@ -1,9 +1,17 @@
 import { HttpStatus } from '@nestjs/common';
 import { IsNumber, IsString } from 'class-validator';
+import { Artist } from 'src/artist/entities/artist.entity';
 import { appError } from 'src/errors';
 import { FavAlbums } from 'src/favs/entities/fav.album.entity';
 import { Track } from 'src/track/entities/track.entity';
-import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryColumn,
+} from 'typeorm';
 import { v4 } from 'uuid';
 
 @Entity({ name: 'album' })
@@ -22,6 +30,10 @@ export class Album extends BaseEntity {
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   artistId: string | null; // refers to Artist
+
+  @OneToOne(() => Artist, { cascade: false })
+  @JoinColumn({ name: 'artistId', referencedColumnName: 'id' })
+  artist: Artist | null;
 
   constructor(obj?: object) {
     super();
