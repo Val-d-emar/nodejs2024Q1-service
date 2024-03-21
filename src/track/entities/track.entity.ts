@@ -54,7 +54,7 @@ export class Track extends BaseEntity {
   }
   static async removeId(id: string) {
     return this.findOneId(id).then(() =>
-      FavTracks.delete({ trackId: id }).then(() => this.delete({ id })),
+      FavTracks.delete({ id }).then(() => this.delete({ id })),
     );
   }
   static async updateDto(id: string, dto: object) {

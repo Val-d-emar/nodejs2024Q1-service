@@ -52,7 +52,7 @@ export class Album extends BaseEntity {
   }
   static async removeId(id: string) {
     return this.findOneId(id).then(() =>
-      FavAlbums.delete({ albumId: id })
+      FavAlbums.delete({ id })
         .then(() => Track.update({ albumId: id }, { albumId: null }))
         .then(() => this.delete({ id })),
     );

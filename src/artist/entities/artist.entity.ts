@@ -50,7 +50,7 @@ export class Artist extends BaseEntity {
   }
   static async removeId(id: string) {
     return this.findOneId(id).then(() =>
-      FavArtists.delete({ artistId: id })
+      FavArtists.delete({ id })
         .then(() => Track.update({ artistId: id }, { artistId: null }))
         .then(() => Album.update({ artistId: id }, { artistId: null }))
         .then(() => this.delete({ id })),

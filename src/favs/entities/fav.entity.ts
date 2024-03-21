@@ -56,11 +56,11 @@ export class Favorites {
 // @ViewEntity({
 //   name: 'favs',
 //   expression: `
-//         SELECT
-//         "favartists" AS "artists",
-//         "favalbums" AS "albums",
-//         "favtracks" AS "tracks"
-//         FROM "favartists", "favalbums", "favtracks"
+// SELECT
+// "favartists" AS "artists",
+// "favalbums" AS "albums",
+// "favtracks" AS "tracks"
+// FROM "favartists", "favalbums", "favtracks"
 //     `,
 // })
 // export class Favs {
@@ -73,17 +73,6 @@ export class Favorites {
 
 //   @ViewColumn()
 //   tracks: Track[];
-// }
-
-// export class Favorites_old {
-//   artists: Artist[]; // favorite artists ids
-//   albums: Album[]; // favorite albums ids
-//   tracks: Track[]; // favorite tracks ids
-//   constructor() {
-//     this.artists = [];
-//     this.albums = [];
-//     this.tracks = [];
-//   }
 // }
 
 // // @Entity({ name: 'favs' })

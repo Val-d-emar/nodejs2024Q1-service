@@ -14,11 +14,10 @@ import {
 export class FavArtists extends BaseEntity {
   @PrimaryColumn({ type: 'varchar', length: 255, nullable: false })
   @IsString()
-  artistId: string; // uuid v4
+  id: string; // uuid v4
 
   @OneToOne(() => Artist, { cascade: false })
-  @JoinColumn()
-  // @JoinColumn({ referencedColumnName: 'id' })
+  @JoinColumn({ name: 'id', referencedColumnName: 'id' })
   artist: Artist; // favorite artist
 
   static async findAll() {
@@ -29,16 +28,16 @@ export class FavArtists extends BaseEntity {
     }).then((items) => items.map((item) => item.artist));
   }
   static async delOneId(id: string) {
-    return this.findOneBy({ artistId: id }).then((item) => {
+    return this.findOneBy({ id }).then((item) => {
       if (!item) appError('artist', HttpStatus.NOT_FOUND);
-      return this.delete({ artistId: id });
+      return this.delete({ id });
     });
   }
 
   static async addOneId(id: string) {
     return Artist.findOneBy({ id }).then((item) => {
       if (!item) appError('artist', HttpStatus.UNPROCESSABLE_ENTITY);
-      return this.save({ artistId: id });
+      return this.save({ id });
     });
   }
 }
