@@ -18,22 +18,16 @@ class DbConfigService {
       username: process.env.POSTGRES_USER ?? 'myuser',
       password: process.env.POSTGRES_PASSWORD ?? 'mypassword',
       database: process.env.POSTGRES_DATABASE ?? 'mydatabase',
-      synchronize: true,
+      synchronize: false,
       logging: false,
       subscribers: [],
       migrationsTableName: 'migrations_TypeORM',
       // entities: [User],
-      // entities: ['src/db/entity/*.entity.ts'],
-      entities: [
-        // 'dist/user/entities/*.entity{.ts,.js}',
-        // 'dist/album/entities/*.entity{.ts,.js}',
-        // 'dist/artist/entities/*.entity{.ts,.js}',
-        // 'dist/track/entities/*.entity{.ts,.js}',
-        'dist/*/entities/*.entity{.ts,.js}',
-      ],
+      // entities: ['src/*/entities/*.entity{.ts,.js}'],
+      entities: ['dist/*/entities/*.entity{.ts,.js}'],
       // migrations: [User],
-      // migrations: ['src/db/migration/*.ts'],
-      migrations: ['dist/db/migration/*{.ts,.js}'],
+      // migrations: ['src/db/migration/*{.ts,.js}'],
+      migrations: ['dist/db/migrations/*{.ts,.js}'],
       ssl: process.env.POSTGRES_MODE !== 'DEV',
       parseInt8: true,
     };
@@ -41,6 +35,7 @@ class DbConfigService {
 }
 export const dbConfigService = new DbConfigService();
 
+// NestJS Connection Configuration
 export const dbAsyncConfig: TypeOrmModuleAsyncOptions = {
   imports: [ConfigModule],
   inject: [ConfigService],
@@ -51,3 +46,7 @@ export const dbAsyncConfig: TypeOrmModuleAsyncOptions = {
 export const datastore = new DataSource(
   dbConfigService.getConfig() as DataSourceOptions,
 );
+
+// TypeORM Connection Config
+export const typeOrmConfig =
+  dbConfigService.getConfig() as TypeOrmModuleOptions;

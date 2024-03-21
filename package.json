@@ -24,13 +24,10 @@
     "test:refresh": "cross-env TEST_MODE=auth jest --testPathPattern refresh.e2e.spec.ts --noStackTrace --runInBand",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "pretypeorm": "(rm ormconfig.json || :) && ts-node -r tsconfig-paths/register src/scripts/cp.db.config.ts",
-    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
-    "typeorm:migration:generate": "npm run typeorm -- migration:generate -n",
-    "typeorm:migration:run": "npm run typeorm -- migration:run",
-    "migration:generate": "npx TypeORM-ts-node-esm migration:generate -d ./db.config.service.ts",
-    "migration:run": "npx TypeORM-ts-node-esm migration:run -d ./db.config.service.ts"
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",    
+    "typeorm": "typeorm-ts-node-esm",
+    "migration:generate":"npm run build && typeorm-ts-node-esm migration:generate src/db/migrations/db -d dist/db/db.config.service.js",
+    "migration:run":"npm run build && typeorm-ts-node-esm migration:run -d dist/db/db.config.service.js"
   },
   "dependencies": {
     "@nestjs/common": "^10.3.3",
