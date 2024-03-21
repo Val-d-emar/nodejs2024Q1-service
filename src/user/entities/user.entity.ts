@@ -7,7 +7,6 @@ import { v4 } from 'uuid';
 
 @Entity({ name: 'user' })
 export class User extends BaseEntity {
-  // @PrimaryGeneratedColumn('uuid')
   @PrimaryColumn({ type: 'varchar', length: 255, nullable: false })
   @IsString()
   id: string;
@@ -25,12 +24,10 @@ export class User extends BaseEntity {
   @IsNumber()
   version: number;
 
-  // @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   @Column({ type: 'bigint' })
   @IsNumber()
   createdAt: number;
 
-  // @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   @Column({ type: 'bigint' })
   @IsNumber()
   updatedAt: number;

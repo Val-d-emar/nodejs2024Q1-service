@@ -7,9 +7,9 @@ import { appError } from 'src/errors';
 import { HttpStatus } from '@nestjs/common';
 
 class Favs {
-  artists: Artist[]; // favorite artists ids
-  albums: Album[]; // favorite albums ids
-  tracks: Track[]; // favorite tracks ids
+  artists: Artist[]; // favorite artists
+  albums: Album[]; // favorite albums
+  tracks: Track[]; // favorite tracks
   constructor() {
     this.artists = [];
     this.albums = [];

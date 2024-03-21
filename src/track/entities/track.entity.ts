@@ -3,8 +3,8 @@ import { IsNumber, IsString } from 'class-validator';
 import { Album } from 'src/album/entities/album.entity';
 import { Artist } from 'src/artist/entities/artist.entity';
 import { appError } from 'src/errors';
-import { Favorites } from 'src/favs/entities/favorites.entity';
-// import { FavTracks } from 'src/favs/entities/fav.track.entity';
+import { Favorites } from 'src/favs/entities/favs.entity';
+
 import {
   BaseEntity,
   Column,

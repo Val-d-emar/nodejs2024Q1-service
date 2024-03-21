@@ -2,8 +2,7 @@ import { HttpStatus } from '@nestjs/common';
 import { IsNumber, IsString } from 'class-validator';
 import { Artist } from 'src/artist/entities/artist.entity';
 import { appError } from 'src/errors';
-import { Favorites } from 'src/favs/entities/favorites.entity';
-// import { FavAlbums } from 'src/favs/entities/fav.album.entity';
+import { Favorites } from 'src/favs/entities/favs.entity';
 import { Track } from 'src/track/entities/track.entity';
 import {
   BaseEntity,
