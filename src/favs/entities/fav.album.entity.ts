@@ -29,14 +29,14 @@ export class FavAlbums extends BaseEntity {
   }
   static async delOneId(id: string) {
     return this.findOneBy({ id }).then((item) => {
-      if (!item) appError(this.name, HttpStatus.NOT_FOUND);
+      if (!item) appError('album', HttpStatus.NOT_FOUND);
       return this.delete({ id });
     });
   }
 
   static async addOneId(id: string) {
     return Album.findOneBy({ id }).then((item) => {
-      if (!item) appError(this.name, HttpStatus.UNPROCESSABLE_ENTITY);
+      if (!item) appError('album', HttpStatus.UNPROCESSABLE_ENTITY);
       return this.save({ id });
     });
   }

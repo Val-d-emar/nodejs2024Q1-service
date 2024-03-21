@@ -1,5 +1,5 @@
 import { Global, Injectable } from '@nestjs/common';
-import { Favorites } from './entities/fav.entity';
+import { Favorites } from './entities/favorites.entity';
 // import { DB } from 'src/db/db.service';
 
 @Injectable()

@@ -5,7 +5,7 @@ import { FavArtists } from './fav.artist.entity';
 import { FavAlbums } from './fav.album.entity';
 import { FavTracks } from './fav.track.entity';
 
-export class Favorites {
+export class Favorites_old {
   artists: Artist[] = []; // favorite artists ids
   albums: Album[] = []; // favorite albums ids
   tracks: Track[] = []; // favorite tracks ids

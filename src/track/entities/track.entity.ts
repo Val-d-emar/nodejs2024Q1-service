@@ -3,7 +3,8 @@ import { IsNumber, IsString } from 'class-validator';
 import { Album } from 'src/album/entities/album.entity';
 import { Artist } from 'src/artist/entities/artist.entity';
 import { appError } from 'src/errors';
-import { FavTracks } from 'src/favs/entities/fav.track.entity';
+import { Favorites } from 'src/favs/entities/favorites.entity';
+// import { FavTracks } from 'src/favs/entities/fav.track.entity';
 import {
   BaseEntity,
   Column,
@@ -71,7 +72,7 @@ export class Track extends BaseEntity {
   }
   static async removeId(id: string) {
     return this.findOneId(id).then(() =>
-      FavTracks.delete({ id }).then(() => this.delete({ id })),
+      Favorites.delete({ id }).then(() => this.delete({ id })),
     );
   }
   static async updateDto(id: string, dto: object) {

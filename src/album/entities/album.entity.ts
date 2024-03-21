@@ -2,7 +2,8 @@ import { HttpStatus } from '@nestjs/common';
 import { IsNumber, IsString } from 'class-validator';
 import { Artist } from 'src/artist/entities/artist.entity';
 import { appError } from 'src/errors';
-import { FavAlbums } from 'src/favs/entities/fav.album.entity';
+import { Favorites } from 'src/favs/entities/favorites.entity';
+// import { FavAlbums } from 'src/favs/entities/fav.album.entity';
 import { Track } from 'src/track/entities/track.entity';
 import {
   BaseEntity,
@@ -64,7 +65,7 @@ export class Album extends BaseEntity {
   }
   static async removeId(id: string) {
     return this.findOneId(id).then(() =>
-      FavAlbums.delete({ id })
+      Favorites.delete({ id })
         .then(() => Track.update({ albumId: id }, { albumId: null }))
         .then(() => this.delete({ id })),
     );

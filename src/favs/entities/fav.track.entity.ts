@@ -29,14 +29,14 @@ export class FavTracks extends BaseEntity {
   }
   static async delOneId(id: string) {
     return this.findOneBy({ id }).then((item) => {
-      if (!item) appError(this.name, HttpStatus.NOT_FOUND);
+      if (!item) appError('track', HttpStatus.NOT_FOUND);
       return this.delete({ id });
     });
   }
 
   static async addOneId(id: string) {
     return Track.findOneBy({ id }).then((item) => {
-      if (!item) appError(this.name, HttpStatus.UNPROCESSABLE_ENTITY);
+      if (!item) appError('track', HttpStatus.UNPROCESSABLE_ENTITY);
       return this.save({ id });
     });
   }
