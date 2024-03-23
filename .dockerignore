@@ -1,0 +1,9 @@
+.git
+.vscode
+# .env
+.env.pg
+Dockerfile
+node_modules/
+dist/
+*.code-workspace
+# tests/

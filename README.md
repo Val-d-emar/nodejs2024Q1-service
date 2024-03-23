@@ -7,35 +7,115 @@
 
 ## Downloading
 
-```
-git clone git@github.com:Val-d-emar/nodejs2024Q1-service.git --branch=dev
+```bash
+git clone git@github.com:Val-d-emar/nodejs2024Q1-service.git --branch=dev2
 ```
 
 ## Installing NPM modules
 
-```
+```bash
+cd nodejs2024Q1-service
 npm install
+```
+
+## Installing Docker
+
+For Linux way:
+
+* If you have had any different containers you may need to delete it firstly:
+
+```bash
+for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; \  
+do sudo apt-get remove $pkg; \  
+done  
+```
+
+* And then install Docker something like this:
+
+```bash
+sudo apt-get install ca-certificates curl  
+sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc  
+sudo chmod a+r /etc/apt/keyrings/docker.asc  
+sudo install -m 0755 -d /etc/apt/keyrings  
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] \  
+https://download.docker.com/linux/debian $(. /etc/os-release && echo \  
+"$VERSION_CODENAME") stable" |  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null  
+sudo apt-get update  
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin  
+# to check install try run:  
+sudo docker run hello-world  
+```
+
+* Read the [official documentation](https://docs.docker.com/get-docker/) anyway.
+
+## Building application
+
+1. Copy the file `.env.example` to `.env` and correct last
+2. Build Docker image for DataBase
+
+```bash
+npm run db:docker:build  
+```
+
+3. Build Docker image for App
+
+```bash
+npm run app:docker:build  
+```
+
+4. Build Application
+
+```bash
+npm run build  
+```
+
+## Migrate database
+
+1. Run Docker container for DataBase
+
+```bash
+npm run db:docker:run  
+```
+
+2. Run migrate script
+
+```bash
+npm run migration:run  
 ```
 
 ## Running application
 
+1. Check the DataBase is running firstly:
+
+```bash
+docker ps  
 ```
-npm start
+
+2. Run App locally at the host:
+
+```bash
+npm start  
+```
+
+3. Or run App from the Docker container:
+
+```bash
+npm run app:docker:run  
 ```
 
 After starting the app on port (4000 as default) you can open
-in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
+in your browser OpenAPI documentation by typing [http://127.0.0.1:{PORT}/docs](http://127.0.0.1:4000/docs).
 
 Service listen on PORT `4000` by default, PORT value is stores in `.env` file and can be changes.
-For more information about OpenAPI/Swagger please visit https://swagger.io/.
+For more information about OpenAPI/Swagger please read [documentation](https://swagger.io/).
 
-## Testing
+## Testing (App must be running firstly)
 
 After application running ***[open new terminal](https://gurugenius.ru/kak-otkryt-terminal/)*** and enter:
 
-To run all tests without authorization
+To run all tests without authorization 
 
-```
+```bash
 npm run test
 ```
 
@@ -243,7 +323,7 @@ npm run test
     - Server answer with `status code` **400** and corresponding message if `artistId` is invalid (not `uuid`)
     - Server answer with `status code` **404** and corresponding message if corresponding artist is not favorite
 
-2. For now, these endpoints operate only with **in-memory** (hardcoded) data, in the next tasks we will use a DB for it.
+2. For now, these endpoints operate only with Postgres DB.
 3. An `application/json` format uses for request and response body.
 4. `User`'s password excludes from server response.
 5. When delete `Artist`, `Album` or `Track`, it's `id` be deleted from favorites (if was there) and references to it in other entities become `null`. For example: `Artist` is deleted => this `artistId` in corresponding `Albums`'s and `Track`'s become `null` + this artist's `id` is deleted from favorites, same logic for `Album` and `Track`.

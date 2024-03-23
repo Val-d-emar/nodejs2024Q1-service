@@ -17,7 +17,7 @@ class DbConfigService {
         : 15432,
       username: process.env.POSTGRES_USER ?? 'myuser',
       password: process.env.POSTGRES_PASSWORD ?? 'mypassword',
-      database: process.env.POSTGRES_DATABASE ?? 'mydatabase',
+      database: process.env.POSTGRES_DB ?? 'mydatabase',
       synchronize: false,
       logging: false,
       subscribers: [],
