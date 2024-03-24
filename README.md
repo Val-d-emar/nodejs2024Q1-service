@@ -3,6 +3,7 @@
 ## Prerequisites
 
 - Git - [Download &amp; Install Git](https://git-scm.com/downloads).
+- You have to get the `export` utility too (on Linux and MacOs it's in the box, on Windows you can install [MinGW](https://www.mingw-w64.org)).
 - Node.js - [Download &amp; Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
 
 ## Downloading
@@ -50,7 +51,7 @@ sudo docker run hello-world
 
 ## Building application
 
-1. Copy the file `.env.example` to `.env` and correct last
+1. Copy the file `.env.example` to `.env` and correct last. [Sure change](https://docs.docker.com/network/) `localhost` to yours real host ip address for work with Docker correctly.
 2. Build Docker image for DataBase
 
 ```bash
@@ -63,7 +64,7 @@ npm run db:docker:build
 npm run app:docker:build  
 ```
 
-4. Build Application
+4. Build Application localy
 
 ```bash
 npm run build  
@@ -113,7 +114,7 @@ For more information about OpenAPI/Swagger please read [documentation](https://s
 
 After application running ***[open new terminal](https://gurugenius.ru/kak-otkryt-terminal/)*** and enter:
 
-To run all tests without authorization 
+To run all tests without authorization
 
 ```bash
 npm run test

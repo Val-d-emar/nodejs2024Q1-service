@@ -3,7 +3,7 @@
 # .env
 .env.pg
 Dockerfile
-node_modules/
-dist/
+# node_modules/
+# dist/
 *.code-workspace
-# tests/
+src/db/pg

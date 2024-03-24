@@ -4,15 +4,19 @@ RUN localedef -i ru_RU -c -f UTF-8 -A /usr/share/locale/locale.alias ru_RU.UTF-8
     ln -sf /bin/bash /bin/sh;\
     apt update && apt install -y iputils-ping net-tools iproute2 mc mc-data
 ENV LANG ru_RU.utf8
+ARG POSTGRES_EXPOSE=5432
 # ENV POSTGRES_USER changeitwhenrun
 # ENV POSTGRES_PASSWORD changeitwhenrun
 # ENV POSTGRES_DB changeitwhenrun
-# WORKDIR /var/lib/postgresql/data
-# EXPOSE 5432
+WORKDIR /var/lib/postgresql/data
+# RUN cp /usr/share/postgresql/postgresql.conf.sample /etc/postgresql/postgresql.conf
+# RUN sed -i "s/#port = 5432/port = ${POSTGRES_EXPOSE}/g" /etc/postgresql/postgresql.conf
+ENV PGPORT $POSTGRES_EXPOSE
+EXPOSE $POSTGRES_EXPOSE
 # задать конфигурацию базы данных:
 # COPY postgresql.conf /etc/postgresql/postgresql.conf
 # добавить скрипт инициализации базы данных:
-# COPY init.sql /docker-entrypoint-initdb.d/init.sql
+COPY ./db.sql /docker-entrypoint-initdb.d/init.sql
 # Подключение
 # docker build -t postgres-for-nodejs .
 # run interactive mode:
