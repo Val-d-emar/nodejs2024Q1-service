@@ -8,10 +8,10 @@
 # 1) Containerization, Docker
 
 - [X] **+20** `Readme.md` has instruction how to run application
-- [ ] **+30** `user-defined bridge` is created and configured
+- [X] **+30** `user-defined bridge` is created and configured
 - [X] **+30**  container auto restart after crash
-- [ ] **+20** application is restarting upon changes implemented into `src` folder
-- [ ] **+30** database files and logs to be stored in volumes instead of container
+- [X] **+20** application is restarting upon changes implemented into `src` folder
+- [X] **+30** database files and logs to be stored in volumes instead of container
 
 # 2) Database (PostgreSQL) & ORM
 
@@ -26,7 +26,7 @@
 # 1) Containerization, Docker
 
 - [X] **+20** Final size of the Docker image with application is less than 500 MB
-- [ ] **+10** Implemented npm script for vulnerabilities scanning (free solution)
+- [X] **+10** Implemented npm script for vulnerabilities scanning (free solution)
 - [ ] **+20** Your built image is pushed to DockerHub
 
 # 2) Database & ORM

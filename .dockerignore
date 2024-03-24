@@ -7,3 +7,5 @@ Dockerfile
 # dist/
 *.code-workspace
 src/db/pg
+db_data
+logs

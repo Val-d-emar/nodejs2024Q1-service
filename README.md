@@ -3,7 +3,6 @@
 ## Prerequisites
 
 - Git - [Download &amp; Install Git](https://git-scm.com/downloads).
-- You have to get the `export` utility too (on Linux and MacOs it's in the box, on Windows you can install [MinGW](https://www.mingw-w64.org)).
 - Node.js - [Download &amp; Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
 
 ## Downloading
@@ -23,7 +22,7 @@ npm install
 
 For Linux way:
 
-* If you have had any different containers you may need to delete it firstly:
+- If you have had any different containers you may need to delete it firstly:
 
 ```bash
 for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; \  
@@ -31,7 +30,7 @@ do sudo apt-get remove $pkg; \
 done  
 ```
 
-* And then install Docker something like this:
+- And then install Docker something like this:
 
 ```bash
 sudo apt-get install ca-certificates curl  
@@ -47,7 +46,7 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 sudo docker run hello-world  
 ```
 
-* Read the [official documentation](https://docs.docker.com/get-docker/) anyway.
+- To install to the anoter OS please read the [official documentation](https://docs.docker.com/get-docker/) anyway.
 
 ## Building application
 
@@ -64,6 +63,12 @@ npm run db:docker:build
 npm run app:docker:build  
 ```
 
+3. Build Docker compose App
+
+```bash
+npm run docker:compose:build  
+```
+
 4. Build Application localy
 
 ```bash
@@ -72,36 +77,52 @@ npm run build
 
 ## Migrate database
 
-1. Run Docker container for DataBase
+1. When you build Dockerfile db will create automatically from saved db.sql. You can make it manually for add to container:
 
 ```bash
-npm run db:docker:run  
+npm run migration:generate:sql
+cp src/db/migration/db.sql.schema src/db/pg/db.sql
 ```
 
-2. Run migrate script
+2. You can generate and run migrate script manually
 
 ```bash
+npm run migration:generate
 npm run migration:run  
 ```
 
 ## Running application
 
-1. Check the DataBase is running firstly:
+1. To run App locally at the host (the DataBase must be running firstly):
 
 ```bash
-docker ps  
-```
-
-2. Run App locally at the host:
-
-```bash
+npm run db:docker:run
 npm start  
 ```
 
-3. Or run App from the Docker container:
+2. To run App and db from the Docker container separately:
 
 ```bash
+npm run db:docker:run
 npm run app:docker:run  
+```
+
+3. To run App and db from the Docker compose interactive:
+
+```bash
+npm run docker:compose:up  
+```
+
+4. To run App and db from the Docker compose like daemon:
+
+```bash
+npm run docker:compose:up -- -d
+```
+
+5. To run App from the Docker compose for application is restarting upon changes implemented into `src` folder:
+
+```bash
+npm run docker:compose:watch  
 ```
 
 After starting the app on port (4000 as default) you can open
@@ -114,15 +135,24 @@ For more information about OpenAPI/Swagger please read [documentation](https://s
 
 After application running ***[open new terminal](https://gurugenius.ru/kak-otkryt-terminal/)*** and enter:
 
-To run all tests without authorization
+1. To run all tests without authorization
 
 ```bash
 npm run test
 ```
 
+2. To scan vulnerabilities
+
+```bash
+npm install -g snyk
+snyk auth # registration token create
+npm run db:docker:scan
+npm run app:docker:scan
+```
+
 **Hints**
 
-* You can use swagger for test api by [http://127.0.0.1:{PORT}/docs](http://127.0.0.1:4000/docs) URL too.
+- You can use swagger for test api by [http://127.0.0.1:{PORT}/docs](http://127.0.0.1:4000/docs) URL too.
 
 # **The application API operate with the following resources:**
 
@@ -182,17 +212,17 @@ npm run test
 
 1. For `Users`, `Artists`, `Albums`, `Tracks` and `Favorites` REST endpoints with separate router paths created
 
-* `Users` (`/user` route)
+- `Users` (`/user` route)
 
-  * `GET /user` - get all users
+  - `GET /user` - get all users
 
     - Server answer with `status code` **200** and all users records
-  * `GET /user/:id` - get single user by id
+  - `GET /user/:id` - get single user by id
 
     - Server answer with `status code` **200** and record with `id === userId` if it exists
     - Server answer with `status code` **400** and corresponding message if `userId` is invalid (not `uuid`)
     - Server answer with `status code` **404** and corresponding message if record with `id === userId` doesn't exist
-  * `POST /user` - create user (following DTO be used)
+  - `POST /user` - create user (following DTO be used)
     `CreateUserDto`
 
     ```typescript
@@ -204,7 +234,7 @@ npm run test
 
     - Server answer with `status code` **201** and newly created record if request is valid
     - Server answer with `status code` **400** and corresponding message if request `body` does not contain **required** fields
-  * `PUT /user/:id` - update user's password
+  - `PUT /user/:id` - update user's password
     `UpdatePasswordDto` (with attributes):
 
     ```typescript
@@ -214,75 +244,75 @@ npm run test
     }
     ```
 
-    - Server answer with ` status code` **200** and updated record if request is valid
-    - Server answer with ` status code` **400** and corresponding message if `userId` is invalid (not `uuid`)
-    - Server answer with ` status code` **404** and corresponding message if record with `id === userId` doesn't exist
-    - Server answer with ` status code` **403** and corresponding message if `oldPassword` is wrong
-  * `DELETE /user/:id` - delete user
+    - Server answer with `status code` **200** and updated record if request is valid
+    - Server answer with `status code` **400** and corresponding message if `userId` is invalid (not `uuid`)
+    - Server answer with `status code` **404** and corresponding message if record with `id === userId` doesn't exist
+    - Server answer with `status code` **403** and corresponding message if `oldPassword` is wrong
+  - `DELETE /user/:id` - delete user
 
     - Server answer with `status code` **204** if the record is found and deleted
     - Server answer with `status code` **400** and corresponding message if `userId` is invalid (not `uuid`)
     - Server answer with `status code` **404** and corresponding message if record with `id === userId` doesn't exist
-* `Tracks` (`/track` route)
+- `Tracks` (`/track` route)
 
-  * `GET /track` - get all tracks
+  - `GET /track` - get all tracks
     - Server answer with `status code` **200** and all tracks records
-  * `GET /track/:id` - get single track by id
+  - `GET /track/:id` - get single track by id
     - Server answer with `status code` **200** and and record with `id === trackId` if it exists
     - Server answer with `status code` **400** and corresponding message if `trackId` is invalid (not `uuid`)
     - Server answer with `status code` **404** and corresponding message if record with `id === trackId` doesn't exist
-  * `POST /track` - create new track
+  - `POST /track` - create new track
     - Server answer with `status code` **201** and newly created record if request is valid
     - Server answer with `status code` **400** and corresponding message if request `body` does not contain **required** fields
-  * `PUT /track/:id` - update track info
-    - Server answer with ` status code` **200** and updated record if request is valid
-    - Server answer with ` status code` **400** and corresponding message if `trackId` is invalid (not `uuid`)
-    - Server answer with ` status code` **404** and corresponding message if record with `id === trackId` doesn't exist
-  * `DELETE /track/:id` - delete track
+  - `PUT /track/:id` - update track info
+    - Server answer with `status code` **200** and updated record if request is valid
+    - Server answer with `status code` **400** and corresponding message if `trackId` is invalid (not `uuid`)
+    - Server answer with `status code` **404** and corresponding message if record with `id === trackId` doesn't exist
+  - `DELETE /track/:id` - delete track
     - Server answer with `status code` **204** if the record is found and deleted
     - Server answer with `status code` **400** and corresponding message if `trackId` is invalid (not `uuid`)
     - Server answer with `status code` **404** and corresponding message if record with `id === trackId` doesn't exist
-* `Artists` (`/artist` route)
+- `Artists` (`/artist` route)
 
-  * `GET /artist` - get all artists
+  - `GET /artist` - get all artists
     - Server answer with `status code` **200** and all artists records
-  * `GET /artist/:id` - get single artist by id
+  - `GET /artist/:id` - get single artist by id
     - Server answer with `status code` **200** and and record with `id === artistId` if it exists
     - Server answer with `status code` **400** and corresponding message if `artistId` is invalid (not `uuid`)
     - Server answer with `status code` **404** and corresponding message if record with `id === artistId` doesn't exist
-  * `POST /artist` - create new artist
+  - `POST /artist` - create new artist
     - Server answer with `status code` **201** and newly created record if request is valid
     - Server answer with `status code` **400** and corresponding message if request `body` does not contain **required** fields
-  * `PUT /artist/:id` - update artist info
-    - Server answer with ` status code` **200** and updated record if request is valid
-    - Server answer with ` status code` **400** and corresponding message if `artist` is invalid (not `uuid`)
-    - Server answer with ` status code` **404** and corresponding message if record with `id === artistId` doesn't exist
-  * `DELETE /artist/:id` - delete album
+  - `PUT /artist/:id` - update artist info
+    - Server answer with `status code` **200** and updated record if request is valid
+    - Server answer with `status code` **400** and corresponding message if `artist` is invalid (not `uuid`)
+    - Server answer with `status code` **404** and corresponding message if record with `id === artistId` doesn't exist
+  - `DELETE /artist/:id` - delete album
     - Server answer with `status code` **204** if the record is found and deleted
     - Server answer with `status code` **400** and corresponding message if `artistId` is invalid (not `uuid`)
     - Server answer with `status code` **404** and corresponding message if record with `id === artistId` doesn't exist
-* `Albums` (`/album` route)
+- `Albums` (`/album` route)
 
-  * `GET /album` - get all albums
+  - `GET /album` - get all albums
     - Server answer with `status code` **200** and all albums records
-  * `GET /album/:id` - get single album by id
+  - `GET /album/:id` - get single album by id
     - Server answer with `status code` **200** and and record with `id === albumId` if it exists
     - Server answer with `status code` **400** and corresponding message if `albumId` is invalid (not `uuid`)
     - Server answer with `status code` **404** and corresponding message if record with `id === albumId` doesn't exist
-  * `POST /album` - create new album
+  - `POST /album` - create new album
     - Server answer with `status code` **201** and newly created record if request is valid
     - Server answer with `status code` **400** and corresponding message if request `body` does not contain **required** fields
-  * `PUT /album/:id` - update album info
-    - Server answer with ` status code` **200** and updated record if request is valid
-    - Server answer with ` status code` **400** and corresponding message if `albumId` is invalid (not `uuid`)
-    - Server answer with ` status code` **404** and corresponding message if record with `id === albumId` doesn't exist
-  * `DELETE /album/:id` - delete album
+  - `PUT /album/:id` - update album info
+    - Server answer with `status code` **200** and updated record if request is valid
+    - Server answer with `status code` **400** and corresponding message if `albumId` is invalid (not `uuid`)
+    - Server answer with `status code` **404** and corresponding message if record with `id === albumId` doesn't exist
+  - `DELETE /album/:id` - delete album
     - Server answer with `status code` **204** if the record is found and deleted
     - Server answer with `status code` **400** and corresponding message if `albumId` is invalid (not `uuid`)
     - Server answer with `status code` **404** and corresponding message if record with `id === albumId` doesn't exist
-* `Favorites`
+- `Favorites`
 
-  * `GET /favs` - get all favorites
+  - `GET /favs` - get all favorites
 
     - Server answer with `status code` **200** and all favorite records (**not their ids**), split by entity type:
 
@@ -293,32 +323,32 @@ npm run test
       tracks: Track[];
     }
     ```
-  * `POST /favs/track/:id` - add track to the favorites
+  - `POST /favs/track/:id` - add track to the favorites
 
     - Server answer with `status code` **201** and corresponding message if track with `id === trackId` exists
     - Server answer with `status code` **400** and corresponding message if `trackId` is invalid (not `uuid`)
     - Server answer with `status code` **422** and corresponding message if track with `id === trackId` doesn't exist
-  * `DELETE /favs/track/:id` - delete track from favorites
+  - `DELETE /favs/track/:id` - delete track from favorites
 
     - Server answer with `status code` **204** if the track was in favorites and now it's deleted id is found and deleted
     - Server answer with `status code` **400** and corresponding message if `trackId` is invalid (not `uuid`)
     - Server answer with `status code` **404** and corresponding message if corresponding track is not favorite
-  * `POST /favs/album/:id` - add album to the favorites
+  - `POST /favs/album/:id` - add album to the favorites
 
     - Server answer with `status code` **201** and corresponding message if album with `id === albumId` exists
     - Server answer with `status code` **400** and corresponding message if `albumId` is invalid (not `uuid`)
     - Server answer with `status code` **422** and corresponding message if album with `id === albumId` doesn't exist
-  * `DELETE /favs/album/:id` - delete album from favorites
+  - `DELETE /favs/album/:id` - delete album from favorites
 
     - Server answer with `status code` **204** if the album was in favorites and now it's deleted id is found and deleted
     - Server answer with `status code` **400** and corresponding message if `albumId` is invalid (not `uuid`)
     - Server answer with `status code` **404** and corresponding message if corresponding album is not favorite
-  * `POST /favs/artist/:id` - add artist to the favorites
+  - `POST /favs/artist/:id` - add artist to the favorites
 
     - Server answer with `status code` **201** and corresponding message if artist with `id === artistId` exists
     - Server answer with `status code` **400** and corresponding message if `artistId` is invalid (not `uuid`)
     - Server answer with `status code` **422** and corresponding message if artist with `id === artistId` doesn't exist
-  * `DELETE /favs/artist/:id` - delete artist from favorites
+  - `DELETE /favs/artist/:id` - delete artist from favorites
 
     - Server answer with `status code` **204** if the artist was in favorites and now it's deleted id is found and deleted
     - Server answer with `status code` **400** and corresponding message if `artistId` is invalid (not `uuid`)

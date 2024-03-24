@@ -1,8 +1,8 @@
-FROM postgres:latest
+FROM postgres:alpine
 LABEL name="postgres4nodejs"
 RUN localedef -i ru_RU -c -f UTF-8 -A /usr/share/locale/locale.alias ru_RU.UTF-8;\
-    ln -sf /bin/bash /bin/sh;\
-    apt update && apt install -y iputils-ping net-tools iproute2 mc mc-data
+    ln -sf /bin/bash /bin/sh
+    # apt update && apt install -y iputils-ping net-tools iproute2 mc mc-data
 ENV LANG ru_RU.utf8
 ARG POSTGRES_EXPOSE=5432
 # ENV POSTGRES_USER changeitwhenrun

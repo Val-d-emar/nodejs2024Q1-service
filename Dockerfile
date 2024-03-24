@@ -68,7 +68,7 @@ COPY ./.env ./.env
 
 EXPOSE $PORT
 
-CMD [ "node", "dist/main"]
+CMD [ "node", "dist/main" ]
 
 # Adding a health check to your Dockerfile
 HEALTHCHECK --interval=1m \

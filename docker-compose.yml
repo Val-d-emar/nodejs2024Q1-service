@@ -42,6 +42,14 @@ services:
       args:
         PORT: ${PORT}
 
+    develop:
+      watch:
+        - action: rebuild
+          path: ./src
+          
+    # restart: always
+    restart: unless-stopped    
+
     # Команда, которую нужно запустить после создания образа.
     # Следующая команда означает запуск "python ./server.py".
 
@@ -62,6 +70,10 @@ services:
     networks:
       - appnet
 
+    volumes:
+      - ./logs:/var/log
+
+
   # Второй сервис (контейнер): база данных.
   # Этот сервис назван 'db'.
 
@@ -78,7 +90,8 @@ services:
       args:
         POSTGRES_EXPOSE: ${POSTGRES_EXPOSE}
 
-    restart: always
+    # restart: always
+    restart: unless-stopped
 
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_EXPOSE}
@@ -90,6 +103,7 @@ services:
 
     volumes:
       - ./db_data:/var/lib/postgresql/data
+      - ./logs:/var/log
 
     # Команда, которую нужно запустить после создания образа.
  
@@ -107,6 +121,8 @@ services:
 # которые будут доступны внутри службы.
 volumes:
   db_data:
+     driver: local
+  logs:
      driver: local
 
 networks:
