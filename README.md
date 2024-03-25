@@ -51,25 +51,25 @@ sudo docker run hello-world
 ## Building application
 
 1. Copy the file `.env.example` to `.env` and correct last. [Sure change](https://docs.docker.com/network/) `localhost` to yours real host ip address for work with Docker correctly.
-2. Build Docker image for DataBase
+2. Build Docker image for DataBase:
 
 ```bash
 npm run db:docker:build  
 ```
 
-3. Build Docker image for App
+3. Build Docker image for App (you have to had an [docker-hub](https://hub.docker.com) profile):
 
 ```bash
 npm run app:docker:build  
 ```
 
-3. Build Docker compose App
+3. Build Docker compose App:
 
 ```bash
 npm run docker:compose:build  
 ```
 
-4. Build Application localy
+4. Build Application localy:
 
 ```bash
 npm run build  
@@ -84,7 +84,7 @@ npm run migration:generate:sql
 cp src/db/migration/db.sql.schema src/db/pg/db.sql
 ```
 
-2. You can generate and run migrate script manually
+2. You can generate and run migrate script manually if you have any change in db:
 
 ```bash
 npm run migration:generate
@@ -107,23 +107,57 @@ npm run db:docker:run
 npm run app:docker:run  
 ```
 
-3. To run App and db from the Docker compose interactive:
+3. To scan vulnerabilities:
+
+```bash
+npm install -g snyk
+snyk auth # registration token create
+npm run db:docker:scan  
+npm run app:docker:scan  
+```
+
+4. To stop containers and delete its (it needs before to compose start):
+
+```bash
+npm run app:docker:stop  
+npm run db:docker:stop  
+npm run docker:container:prune
+```
+
+5. To pull images from [Docker Hub](https://hub.docker.com) (you have to had a [Docker Hub](https://hub.docker.com) profile):
+
+```bash
+docker pull valdemarsu/nodejs2024q1-service-db:latest
+docker pull valdemarsu/nodejs2024q1-service-app:latest
+```
+
+6. To run App and db from the Docker compose interactive:
 
 ```bash
 npm run docker:compose:up  
 ```
 
-4. To run App and db from the Docker compose like daemon:
+Press Ctrl+C to stop it.
+
+7. To stop App and db from the Docker compose and delete its:
+
+```bash
+npm run docker:compose:down
+```
+
+8. To run App and db from the Docker compose like daemon:
 
 ```bash
 npm run docker:compose:up -- -d
 ```
 
-5. To run App from the Docker compose for application is restarting upon changes implemented into `src` folder:
+9. To run App from the Docker compose for application is restarting upon changes implemented into `src` folder:
 
 ```bash
 npm run docker:compose:watch  
 ```
+
+Press Ctrl+C to stop it.
 
 After starting the app on port (4000 as default) you can open
 in your browser OpenAPI documentation by typing [http://127.0.0.1:{PORT}/docs](http://127.0.0.1:4000/docs).
@@ -139,15 +173,6 @@ After application running ***[open new terminal](https://gurugenius.ru/kak-otkry
 
 ```bash
 npm run test
-```
-
-2. To scan vulnerabilities
-
-```bash
-npm install -g snyk
-snyk auth # registration token create
-npm run db:docker:scan
-npm run app:docker:scan
 ```
 
 **Hints**

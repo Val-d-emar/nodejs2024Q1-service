@@ -1,8 +1,8 @@
 # Builder needs only if your host OS different from Linux
 FROM node:latest as builder
 RUN localedef -i ru_RU -c -f UTF-8 -A /usr/share/locale/locale.alias ru_RU.UTF-8;\
-    ln -sf /bin/bash /bin/sh;\
-    apt update && apt install -y iputils-ping net-tools iproute2 mc mc-data
+    ln -sf /bin/bash /bin/sh;
+    # apt update && apt install -y iputils-ping net-tools iproute2 mc mc-data
 ENV LANG ru_RU.utf8
 # to change when run docker
 ARG PORT=4000
@@ -17,9 +17,16 @@ COPY package*.json ./
 # Install app dependencies using the `npm ci` command instead of `npm install`
 RUN npm ci --only=production 
 # copy production node_modules
+# VOLUME for cashing
+VOLUME [ "/usr/src/app/node_modules" ]
+
 RUN cp -R node_modules prod_node_modules
 # Install all node modules
 RUN npm install
+
+
+# VOLUME for cashing
+VOLUME [ "/usr/src/app/prod_node_modules" ]
 
 # Running `npm ci` removes the existing node_modules directory.
 # Passing in --only=production ensures that only the production dependencies are installed.
@@ -33,9 +40,6 @@ COPY . .
 
 # Build the project
 RUN npm run build
-
-# VOLUME /usr/src/app
-VOLUME [ "/usr/src/app/prod_node_modules" ]
 
 # Your app binds to port $PORT so use the EXPOSE instruction
 EXPOSE $PORT

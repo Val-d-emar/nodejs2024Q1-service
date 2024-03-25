@@ -24,7 +24,7 @@ services:
     env_file:
       - .env
 
-    image: ${APP_NAME}-app
+    image: valdemarsu/${APP_NAME}-app:latest
 
     depends_on:
       - db
@@ -88,7 +88,7 @@ services:
     env_file:
       - .env
     
-    image: ${APP_NAME}-db
+    image: valdemarsu/${APP_NAME}-db:latest
 
     # Здесь context соответствует пути к папке, которая содержит
     # файл Dockerfile для db части системы. Если надо его пересобирать
