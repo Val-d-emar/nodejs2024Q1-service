@@ -24,16 +24,18 @@ services:
     env_file:
       - .env
 
+    image: ${APP_NAME}-app
+
     depends_on:
       - db
-      
+
     # links:
     #   - db
 
     # Ключевое слово "build" позволяет задать
     # путь к файлу Dockerfile, который нужно использовать для создания образа,
     # который позволит запустить сервис.
-    # Здесь 'server/' соответствует пути к папке сервера,
+    # Здесь 'context' соответствует пути к папке app,
     # которая содержит соответствующий Dockerfile.
 
     build: 
@@ -44,9 +46,14 @@ services:
 
     develop:
       watch:
+        # - action: sync+restart
+        #   path: ./.env
+        #   target: /usr/src/app/.env  
         - action: rebuild
           path: ./src
-          
+          target: /usr/src/app/src          
+        # - action: rebuild
+        #   path: package.json
     # restart: always
     restart: unless-stopped    
 
@@ -80,9 +87,11 @@ services:
   db:
     env_file:
       - .env
+    
+    image: ${APP_NAME}-db
 
-    # Здесь 'client/ соответствует пути к папке, которая содержит
-    # файл Dockerfile для клиентской части системы.
+    # Здесь context соответствует пути к папке, которая содержит
+    # файл Dockerfile для db части системы. Если надо его пересобирать
 
     build:     
       context: ./src/db/pg
