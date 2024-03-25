@@ -1,11 +1,17 @@
 1. Task: [REST service: Containerization and Database (PostgreSQL) &amp; ORM](https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/containerization-database-orm/assignment.md)
-2. Screenshots:  
-![tests](./doc/screenshots/1.png?raw=true "https://github.com/Val-d-emar/nodejs2024Q1-service/blob/dev/doc/screenshots/1.png?raw=true")
-![images](./doc/screenshots/2.png?raw=true "https://github.com/Val-d-emar/nodejs2024Q1-service/blob/dev/doc/screenshots/2.png?raw=true")
-![hub](./doc/screenshots/3.png?raw=true "https://github.com/Val-d-emar/nodejs2024Q1-service/blob/dev/doc/screenshots/3.png?raw=true")
-![service](./doc/screenshots/4.png?raw=true "https://github.com/Val-d-emar/nodejs2024Q1-service/blob/dev/doc/screenshots/4.png?raw=true")
-1. Done 25.03.2024 / deadline 26.03.2024
-1. Score: 360 / 360
+2. Screenshots:![tests](./doc/screenshots/1.png?raw=true "https://github.com/Val-d-emar/nodejs2024Q1-service/blob/dev/doc/screenshots/1.png?raw=true")
+   ![images](./doc/screenshots/2.png?raw=true "https://github.com/Val-d-emar/nodejs2024Q1-service/blob/dev/doc/screenshots/2.png?raw=true")
+   ![hub](./doc/screenshots/3.png?raw=true "https://github.com/Val-d-emar/nodejs2024Q1-service/blob/dev/doc/screenshots/3.png?raw=true")
+   ![service](./doc/screenshots/4.png?raw=true "https://github.com/Val-d-emar/nodejs2024Q1-service/blob/dev/doc/screenshots/4.png?raw=true")
+3. Deploy:
+
+```bash
+docker pull valdemarsu/nodejs2024q1-service-app:latest
+docker pull valdemarsu/nodejs2024q1-service-db:latest
+```
+
+4. Done 25.03.2024 / deadline 26.03.2024
+5. Score: 360 / 360
 
 ## Basic Scope
 
@@ -31,7 +37,7 @@
 
 - [X] **+20** Final size of the Docker image with application is less than 500 MB
 - [X] **+10** Implemented npm script for vulnerabilities scanning (free solution)
-- [ ] **+20** Your built image is pushed to DockerHub
+- [X] **+20** Your built image is pushed to DockerHub
 
 # 2) Database & ORM
 
