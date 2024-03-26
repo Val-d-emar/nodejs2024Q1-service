@@ -1,0 +1,12 @@
+.git
+.vscode
+.env.pg
+Dockerfile
+node_modules
+build_dist
+build_modules
+dist
+*.code-workspace
+src/db/pg
+db_data
+logs
