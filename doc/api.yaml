@@ -117,10 +117,10 @@ security:
   - bearerAuth: []
 
 paths:
-  /login:
+  /auth/login:
     post:
       tags:
-        - Login
+        - Auth
       security: []
       summary: Login
       description: Logins a user and returns a JWT-token
@@ -154,11 +154,11 @@ paths:
                 description: JWT Token
         403:
           description: Incorrect login or password
-  /signup:
+  /auth/signup:
     post:
       tags:
-        - Signup
-      security: [ ]
+        - Auth
+      security: []
       summary: Signup
       description: Signup a user
       requestBody:
@@ -183,12 +183,10 @@ paths:
                 - login
                 - password
       responses:
-        204:
+        201:
           description: Successful signup
         400:
-          description: Bad request
-        409:
-          description: Conflict. Login already exists
+          description: Bad request dto is invalid (no login or password, or they are not a strings)
   /user:
     get:
       tags:

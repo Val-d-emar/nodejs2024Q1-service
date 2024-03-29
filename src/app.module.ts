@@ -1,4 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
@@ -10,7 +15,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { dbAsyncConfig } from './db/db.config.service';
 import { ConfigModule } from '@nestjs/config';
 import { LoggingModule } from './logging/logging.module';
-import { LoggingService } from './logging/logging.service';
+import { LoggingMiddleware, LoggingService } from './logging/logging.service';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
@@ -34,6 +39,9 @@ import { AuthModule } from './auth/auth.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggingService).forRoutes('*');
+    consumer
+      .apply(LoggingMiddleware)
+      .forRoutes({ path: '*', method: RequestMethod.ALL });
   }
+  logger = new LoggingService();
 }

@@ -5,6 +5,6 @@ export class AppService {
   logger: Logger;
 
   constructor() {
-    this.logger = new Logger();
+    // this.logger = new Logger();
   }
 }

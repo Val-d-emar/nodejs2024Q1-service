@@ -4,6 +4,7 @@ import YAML = require('yamljs');
 import path = require('path');
 import swaggerUi = require('swagger-ui-express');
 import * as dotenv from 'dotenv';
+import { LoggingService } from './logging/logging.service';
 dotenv.config();
 
 process.on('unhandledRejection', (reason: Error | any) => {
@@ -25,18 +26,20 @@ console.log('Starting on port:', PORT);
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const logger = new LoggingService();
 
   // Загрузка файла документации
   const swaggerDocument = YAML.load(path.join(__dirname, '../doc', 'api.yaml'));
   app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-  app.use((_req, res, next) => {
+  app.use((req, res, next) => {
     const send = res.send;
-    res.send = (c) => {
-      console.log(`Code: ${res.statusCode}`);
-      console.log('Body: ', c);
+    res.send = (body) => {
+      logger.debug(
+        `${req.method} ${req.originalUrl} ${JSON.stringify(req.body)} => ${res.statusCode} ${body}`,
+      );
       res.send = send;
-      return res.send(c);
+      return res.send(body);
     };
     next();
   });

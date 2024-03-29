@@ -31,22 +31,19 @@ export class AuthService {
   }
 
   async login(authDto: AuthDto) {
-    return this.userService.findOneBy(authDto).then((user: User) => {
-      return {
-        login: user.login,
-        ...this._createToken(user),
-      };
+    return this.validateUser(authDto).then((user: User) => {
+      if (user) {
+        return {
+          ...this._createToken(authDto),
+        };
+      } else {
+        throw new HttpException(
+          'Incorrect login or password',
+          HttpStatus.FORBIDDEN,
+        );
+      }
     });
   }
-
-  // async validateUser(username: string, pass: string): Promise<any> {
-  //   const user = await this.userService.findOneBy(username);
-  //   if (user && user.password === pass) {
-  //     const { password, ...result } = user;
-  //     return result;
-  //   }
-  //   return null;
-  // }
 
   async validateUser(authDto: AuthDto) {
     return this.userService.findOneBy(authDto).catch(() => {
@@ -60,8 +57,8 @@ export class AuthService {
 
   private _createToken(authDto: AuthDto): any {
     return {
-      expires: process.env.TOKEN_EXPIRE_TIME + '',
-      token: this.jwtService.sign(authDto),
+      // expires: process.env.TOKEN_EXPIRE_TIME + '',
+      token: this.jwtService.sign(JSON.parse(JSON.stringify(authDto))),
     };
   }
 }

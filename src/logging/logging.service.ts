@@ -1,125 +1,85 @@
 // import { Injectable, NestMiddleware } from '@nestjs/common';
 
-import { Injectable, LoggerService } from '@nestjs/common';
+import { Injectable, Logger, LoggerService } from '@nestjs/common';
 
 @Injectable()
 export class LoggingService implements LoggerService {
+  private logger = new Logger('HTTP');
   /**
    * Write a 'log' level log.
    */
   log(message: any, ...optionalParams: any[]) {
-    console.log(message, ...optionalParams);
+    this.logger.log(message, ...optionalParams);
   }
 
   /**
    * Write a 'fatal' level log.
    */
   fatal(message: any, ...optionalParams: any[]) {
-    console.error(message, ...optionalParams);
+    this.logger.error(message, ...optionalParams);
   }
 
   /**
    * Write an 'error' level log.
    */
   error(message: any, ...optionalParams: any[]) {
-    console.error(message, ...optionalParams);
+    this.logger.error(message, ...optionalParams);
   }
 
   /**
    * Write a 'warn' level log.
    */
   warn(message: any, ...optionalParams: any[]) {
-    console.warn(message, ...optionalParams);
+    this.logger.warn(message, ...optionalParams);
   }
 
   /**
    * Write a 'debug' level log.
    */
   debug?(message: any, ...optionalParams: any[]) {
-    console.debug(message, ...optionalParams);
+    this.logger.debug(message, ...optionalParams);
   }
 
   /**
    * Write a 'verbose' level log.
    */
   verbose?(message: any, ...optionalParams: any[]) {
-    console.log(message, ...optionalParams);
+    this.logger.debug(message, ...optionalParams);
   }
 }
 
-// import { Injectable, Logger, NestMiddleware } from '@nestjs/common';
-// import { Request, Response, NextFunction } from 'express';
+import { NestMiddleware } from '@nestjs/common';
+import { Request, Response, NextFunction } from 'express';
 
-// @Injectable()
-// export class LoggingService implements NestMiddleware {
-//   private logger = new Logger('HTTP');
+@Injectable()
+export class LoggingMiddleware implements NestMiddleware {
+  constructor(private readonly logger: LoggingService) {}
+  // resDotSendInterceptor = (res, send) => (content) => {
+  //   res.contentBody = content;
+  //   res.send = send;
+  //   res.send(content);
+  //   return res.send;
+  // };
+  use(request: Request, response: Response, next: NextFunction) {
+    // const { method, originalUrl: url } = request;
+    // response.send = this.resDotSendInterceptor(response, response.send);
+    // response.on('finish', () => {
+    //   // const { statusCode } = response;
+    //   // const contentLength = response.get('content-length');
+    //   const send = response.send;
+    //   response.send = (c) => {
+    //     // this.logger.log(`Code: ${response.statusCode} Body: ${c}`);
+    //     this.logger.log(
+    //       `${method} ${url} ${JSON.stringify(request.body)} - ${response.statusCode} ${JSON.stringify(c)}`,
+    //     );
+    //     response.send = send;
+    //     return response.send(c);
+    //   };
+    //   // this.logger.log(
+    //   //   `${method} ${url} ${JSON.stringify(request.body)} - ${response.statusCode} ${JSON.stringify(response)}`,
+    //   // );
+    // });
 
-//   use(request: Request, response: Response, next: NextFunction): void {
-//     const { method, originalUrl, params, body } = request;
-//     // console.log(request);
-//     // const userAgent = request.get('user-agent') || '';
-
-//     response.on('finish', () => {
-//       // const { statusCode } = response;
-//       // const body = response;
-//       console.log(response);
-//       // this.logger.log(
-//       //   `${method} ${originalUrl} ${params} ${body} ${statusCode}`,
-//       // );
-//     });
-
-//     next();
-//   }
-// }
-// import { Request, Response, NextFunction } from 'express';
-
-// import { Injectable, Logger } from '@nestjs/common';
-// import * as winston from 'winston';
-
-// @Injectable()
-// export class LoggingService {
-//   private readonly logger: winston.Logger;
-
-//   constructor() {
-//     this.logger = winston.createLogger({
-//       transports: [
-//         new winston.transports.Console({
-//           level: 'debug',
-//         }),
-//         new winston.transports.File({
-//           filename: 'app.log',
-//           level: 'info',
-//         }),
-//       ],
-//     });
-//   }
-
-//   log(message: string) {
-//     this.logger.info(message);
-//   }
-
-//   error(message: string, error: Error) {
-//     this.logger.error(message, error);
-//   }
-// }
-
-// @Injectable()
-// export class LoggingMiddleware implements NestMiddleware {
-//   constructor(private readonly logger: LoggingService) {}
-
-//   use(request: Request, response: Response, next: NextFunction) {
-//     const { ip, method, path: url } = request;
-//     const userAgent = request.get('user-agent') || '';
-
-//     response.on('finish', () => {
-//       const { statusCode } = response;
-//       const contentLength = response.get('content-length');
-
-//       this.logger.log(
-//         `${method} ${url} ${statusCode} ${contentLength} - ${userAgent} ${ip}`,
-//       );
-//     });
-
-//     next();
-//   }
-// }
+    next();
+  }
+}
