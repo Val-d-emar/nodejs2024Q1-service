@@ -16,5 +16,7 @@ export function appError(item: string, status: HttpStatus) {
         `record with id === ${item}Id doesn't exist`,
         status,
       );
+    case HttpStatus.UNAUTHORIZED:
+      throw new HttpException(`Authentication failed`, status);
   }
 }

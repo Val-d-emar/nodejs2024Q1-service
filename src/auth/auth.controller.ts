@@ -2,7 +2,6 @@ import {
   Controller,
   Body,
   Post,
-  HttpException,
   HttpStatus,
   UsePipes,
   ValidationPipe,
@@ -13,7 +12,7 @@ import { AuthDto } from './dto/auth.dto';
 import { RefreshToken } from './dto/refreshToken.dto';
 import { Public } from './auth.guard';
 
-@Controller('auth') // необязательный префикс
+@Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 

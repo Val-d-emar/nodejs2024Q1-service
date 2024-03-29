@@ -195,7 +195,7 @@ After application running ***[open new terminal](https://gurugenius.ru/kak-otkry
 1. To run all tests without authorization
 
 ```bash
-npm run test
+npm run test:auth
 ```
 
 **Hints**
@@ -408,3 +408,49 @@ npm run test
 5. When delete `Artist`, `Album` or `Track`, it's `id` be deleted from favorites (if was there) and references to it in other entities become `null`. For example: `Artist` is deleted => this `artistId` in corresponding `Albums`'s and `Track`'s become `null` + this artist's `id` is deleted from favorites, same logic for `Album` and `Track`.
 6. Non-existing entity can't be added to `Favorites`.
 7. Incoming requests validate.
+8. Authentication and Authorization Endpoints
+
+* `Signup` (`auth/signup` route)
+  * `POST auth/signup` - send `login` and `password` to create a new `user`
+    - Server should answer with `status code` **201** and corresponding message if dto is valid
+    - Server should answer with `status code` **400** and corresponding message if dto is invalid (no `login` or `password`, or they are not a `strings`)
+* `Login` (`auth/login` route)
+  * `POST auth/login` - send `login` and `password` to get Access token and Refresh token (optionally)
+    - Server should answer with `status code` **200** and tokens if dto is valid
+    - Server should answer with `status code` **400** and corresponding message if dto is invalid (no `login` or `password`, or they are not a `strings`)
+    - Server should answer with `status code` **403** and corresponding message if authentication failed (no user with such `login`, `password` doesn't match actual one, etc.)
+* `Refresh` (`auth/refresh` route)
+  * `POST auth/refresh` - send refresh token in body as `{ refreshToken }` to get new pair of Access token and Refresh token
+    - Server should answer with `status code` **200** and tokens in body if dto is valid
+    - Server should answer with `status code` **401** and corresponding message if dto is invalid (no `refreshToken` in body)
+    - Server should answer with `status code` **403** and corresponding message if authentication failed (Refresh token is invalid or expired)
+
+9. Once **POST** `/auth/signup` accepts `password` property, it is replaced with **hash** for password encryption, doesn't save raw passwords in database.
+10. **JWT** Access token should contain `userId` and `login` in a **payload** and has expiration time (expiration time of Refresh token should be longer, than Access token).
+11. The **JWT** Access token add in HTTP `Authorization` header to all requests that requires authentication. Proxy all the requests (except `auth/signup`, `auth/login`, `/doc`, `/`) and check that HTTP `Authorization` header has the correct value of **JWT** Access token.
+    HTTP authentication follow `Bearer` scheme:
+
+```
+  Authorization: Bearer <jwt_token>
+```
+
+12. In case of the HTTP `Authorization` header in the request is absent or invalid or doesn’t follow `Bearer` scheme or Access token has expired, further router method execution should be stopped and lead to response with HTTP **401** code and the corresponding error message.
+13. Secrets used for signing the tokens are stored in `.env` file.
+
+### `bcrypt` installation issues:
+
+#### If you see an error that starts with:
+
+```console
+gyp ERR! stack Error: "pre" versions of node cannot be installed, use the --nodedir flag instead
+```
+
+Please check [compatibility between Node.JS and Bcrypt versions](https://www.npmjs.com/package/bcrypt#version-compatibility).
+
+#### If you face an error like this:
+
+```console
+node-pre-gyp ERR! Tried to download(404): https://github.com/kelektiv/node.bcrypt.js/releases/download/v1.0.2/bcrypt_lib-v1.0.2-node-v48-linux-x64.tar.gz
+```
+
+Make sure you have the appropriate dependencies installed and configured for your platform. You can find installation instructions for the dependencies for some common platforms in [this page](https://github.com/kelektiv/node.bcrypt.js/wiki/Installation-Instructions).

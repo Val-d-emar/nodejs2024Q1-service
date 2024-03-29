@@ -15,8 +15,5 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 
   async validate(authDto: AuthDto) {
     return this.authService.validateUser(authDto);
-    // .catch(() => {
-    //   throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
-    // });
   }
 }

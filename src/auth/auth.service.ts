@@ -5,6 +5,8 @@ import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { User } from 'src/user/entities/user.entity';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { appError } from 'src/errors';
+import { Payload } from './entities/auth.entity';
 
 @Injectable()
 export class AuthService {
@@ -31,33 +33,29 @@ export class AuthService {
   async login(authDto: AuthDto) {
     return this.validateUser(authDto).then((user: User) => {
       if (user) {
-        return {
-          ...this._createToken(authDto),
-        };
+        const payload = { login: user.login, userId: user.id };
+        return this._createToken(payload);
       } else {
-        throw new HttpException(
-          'Incorrect login or password',
-          HttpStatus.FORBIDDEN,
-        );
+        appError('Incorrect login or password', HttpStatus.FORBIDDEN);
       }
     });
   }
 
   async validateUser(authDto: AuthDto) {
-    return this.userService.findOneBy(authDto).catch(() => {
-      throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
-    });
+    return this.userService
+      .findOneBy(authDto)
+      .catch(() => appError('', HttpStatus.UNAUTHORIZED));
   }
 
   refresh(refreshToken: RefreshToken) {
     return refreshToken;
   }
 
-  private _createToken(authDto: AuthDto): any {
+  private _createToken(payload: Payload): any {
     return {
       // expires: process.env.TOKEN_EXPIRE_TIME + '',
-      accessToken: this.jwtService.sign(JSON.parse(JSON.stringify(authDto))),
-      refreshToken: "refreshToken",
+      accessToken: this.jwtService.sign(JSON.parse(JSON.stringify(payload))),
+      refreshToken: 'refreshToken',
     };
   }
 }

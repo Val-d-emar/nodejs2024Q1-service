@@ -1,4 +1,4 @@
-export type Auth = {
+export class Payload {
   login: string;
-  password: string;
-};
+  userId: string;
+}

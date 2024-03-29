@@ -1,62 +1,53 @@
-1. Task: [REST service: Containerization and Database (PostgreSQL) &amp; ORM](https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/containerization-database-orm/assignment.md)
-2. Screenshots:![tests](./doc/screenshots/1.png?raw=true "https://github.com/Val-d-emar/nodejs2024Q1-service/blob/dev/doc/screenshots/1.png?raw=true")
-   ![images](./doc/screenshots/2.png?raw=true "https://github.com/Val-d-emar/nodejs2024Q1-service/blob/dev/doc/screenshots/2.png?raw=true")
-   ![hub](./doc/screenshots/3.png?raw=true "https://github.com/Val-d-emar/nodejs2024Q1-service/blob/dev/doc/screenshots/3.png?raw=true")
-   ![service](./doc/screenshots/4.png?raw=true "https://github.com/Val-d-emar/nodejs2024Q1-service/blob/dev/doc/screenshots/4.png?raw=true")
+1. Task: [REST service: Logging &amp; Error Handling and Authentication and Authorization](https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/logging-error-authentication-authorization/assignment.md#2-authentication-and-authorization-1)
+2. Screenshots:
 3. Deploy:
+4. Done 01.04.2024 / deadline 02.04.2024
+5. Score: 340 / 340
 
-```bash
-docker pull valdemarsu/nodejs2024q1-service-app:latest
-docker pull valdemarsu/nodejs2024q1-service-db:latest
-```
-
-4. Done 25.03.2024 / deadline 26.03.2024
-5. Score: 360 / 360
+# REST service: Logging & Error Handling and Authentication and Authorization
 
 ## Basic Scope
 
-# 1) Containerization, Docker
+# 1) Logging & Error Handling:
 
-- [X] **+20** `Readme.md` has instruction how to run application
-- [X] **+30** `user-defined bridge` is created and configured
-- [X] **+30**  container auto restart after crash
-- [X] **+20** application is restarting upon changes implemented into `src` folder
-- [X] **+30** database files and logs to be stored in volumes instead of container
+- [X] **+20** Custom `LoggingService` is implemented and used for logging
+- [ ] **+20** Custom `Exception Filter` is implemented and used for handling exceptions during request processing
+- [X] **+20** Logging for request (of at least `url`, `query parameters`, `body`) and response with `status code` is implemented.
+- [ ] **+20** Error handling is implemented including sending response with an appropriate `http status code` and errors logging.
+- [ ] **+10** Error handling  and logging is implemented for `uncaughtException` event.
+- [ ] **+10** Error handling  and logging is implemented for `unhandledRejection` event.
 
-# 2) Database (PostgreSQL) & ORM
+# 2) Authentication and Authorization:
 
-- [X] **+20** `Users` data is stored in **PostgreSQL** database and `typeorm` / `prisma`  interacts with the database to manipulate data.
-- [X] **+20** `Artists` data is stored in **PostgreSQL** database and `typeorm` / `prisma`  interacts with the database to manipulate data.
-- [X] **+20** `Albums` data is stored in **PostgreSQL** database and `typeorm` / `prisma`  interacts with the database to manipulate data.
-- [X] **+20** `Tracks` data is stored in **PostgreSQL** database and `typeorm` / `prisma`  interacts with the database to manipulate data.
-- [X] **+20** `Favorites` data is stored in **PostgreSQL** database and `typeorm` / `prisma`  interacts with the database to manipulate data.
+- [X] **+30** Route `/auth/signup` implemented correctly, related logic is divided between controller and corresponding service
+- [X] **+30** Route `/auth/login` has been implemented, related logic is divided between controller and corresponding service
+- [ ] **+10** `User` `password` saved into database as hash
+- [X] **+20** Access Token is implemented,`JWT` payload contains `userId` and `login`, secret key is saved in `.env`.
+- [X] **+40** Authentication is required for the access to all routes except `/auth/signup`, `/auth/login`, `/doc` and `/`.
+- [ ] **+10** Separate module is implemented **within application scope** to check that all requests to all routes except mentioned above contain required JWT token
 
 ## Advanced Scope
 
-# 1) Containerization, Docker
+# 1) Logging & Error Handling:
 
-- [X] **+20** Final size of the Docker image with application is less than 500 MB
-- [X] **+10** Implemented npm script for vulnerabilities scanning (free solution)
-- [X] **+20** Your built image is pushed to DockerHub
+- [ ] **+20** Logs are written to a file.
+- [ ] **+10** Logs files are rotated with size.
+- [ ] **+10** Add environment variable to specify max file size.
+- [ ] **+10** Error logs are written to a separate file (either only to a separate file or in addition to logging into a common file).
+- [ ] **+20** Add environment variable to specify logging level and corresponding functionality.
+  Logs with configured level to be registered as well as other higher priority levels. For example if you set level 2, all messages with levels 0, 1 and 2 should be logged. You should use Nest.js logging levels.
 
-# 2) Database & ORM
+# 2) Authentication and Authorization:
 
-- [X] **+30** Migrations are used to create database entities
-- [X] **+10** Variables used for connection to database to be stored in `.env`
-- [X] **+10** `typeorm` [decorators](https://typeorm.io/#/relations) or `prisma` relations create relations between entities
-- [X] **+30** Local **PostgreSQL** installation is not required for task check, connection is implemented to database stored in `docker` container  (on the basis of the previous task)
+- [ ] **+30** Route `/auth/refresh` implemented correctly, related logic is divided between controller and corresponding service
 
 ## Forfeits
 
-- ~~**-20** In case specific image is not used (it is required to use images like `postgres` and `node`, but not `ubuntu` with installation of `node` or `postgres`)~~
-- ~~**-20** Postgres container is not configured as dependency for application container~~
-- ~~**-10** for each failing test with `npm run test`~~
-- ~~**-20** `docker-compose.yml` contains hardcoded variables~~
-- ~~**-30% of total task score** Commits after deadline, except commits that affect only Readme.md, .gitignore, etc.~~
-- ~~**-40** No Pull Request created~~
-- ~~**-20** PR description is incorrect~~
-- ~~**-40** No separate development branch~~
-- ~~**-10** for each failing test with `npm run test`~~
-- ~~**-20** Less than 3 commits in the development branch, not taking into account commits, making changes only in `Readme.md` or similar files (`tsconfig.json`, `.gitignore`, `.prettierrc.json`, etc.)~~
-- ~~**-10 points** for each error either on `npm run lint` on the basis of the **local config** or for compilation errors on the basis of the **local tsconfig** (`errors` not `warnings`).~~
--
+- **-10** for each failing test
+  (for authentication and authorization  module tests to be run with `npm run test:auth` )
+- **-30% of max task score** Commits after deadline, except commits that affect only Readme.md, .gitignore, etc.
+- **-10 points** for each error either on `npm run lint` on the basis of the **local config** or for compilation errors on the basis of the **local tsconfig** (`errors` not `warnings`).
+- **-20** No separate development branch
+- **-20** No Pull Request
+- **-10** Pull Request description is incorrect
+- **-20** Less than 3 commits in the development branch, not including commits that make changes only to `Readme.md` or similar files (`tsconfig.json`, `.gitignore`, `.prettierrc.json`, etc.)
