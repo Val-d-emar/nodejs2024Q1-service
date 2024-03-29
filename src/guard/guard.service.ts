@@ -13,7 +13,7 @@ export const IS_PUBLIC_KEY = 'isPublic';
 export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class GuardService implements CanActivate {
   constructor(
     private jwtService: JwtService,
     private reflector: Reflector,

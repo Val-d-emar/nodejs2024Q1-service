@@ -17,6 +17,7 @@ import { ConfigModule } from '@nestjs/config';
 import { LoggingModule } from './logging/logging.module';
 import { LoggingMiddleware, LoggingService } from './logging/logging.service';
 import { AuthModule } from './auth/auth.module';
+import { GuardModule } from './guard/guard.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { AuthModule } from './auth/auth.module';
     TypeOrmModule.forRootAsync(dbAsyncConfig),
     LoggingModule,
     AuthModule,
+    GuardModule,
   ],
   controllers: [AppController],
   providers: [AppService],

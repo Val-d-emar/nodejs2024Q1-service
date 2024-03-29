@@ -10,7 +10,7 @@ import {
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto/auth.dto';
 import { RefreshToken } from './dto/refreshToken.dto';
-import { Public } from './auth.guard';
+import { Public } from 'src/guard/guard.service';
 
 @Controller('auth')
 export class AuthController {
