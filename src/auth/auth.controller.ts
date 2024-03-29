@@ -21,11 +21,7 @@ export class AuthController {
   @UsePipes(new ValidationPipe())
   @Post('signup')
   public async signup(@Body() authDto: AuthDto) {
-    return this.authService.signup(authDto).then((result) => {
-      if (!result.success) {
-        throw new HttpException(result.message, HttpStatus.BAD_REQUEST);
-      }
-    });
+    return this.authService.signup(authDto);
   }
 
   @Public()

@@ -14,20 +14,18 @@ export class AuthService {
   ) {}
 
   async signup(authDto: AuthDto) {
-    return this.userService
-      .create(authDto as CreateUserDto)
-      .then(() => {
+    return this.userService.create(authDto as CreateUserDto).then((user) => {
+      if (user) {
         return {
-          success: true,
-          message: 'user registered',
+          id: user.id,
         };
-      })
-      .catch((err) => {
-        return {
-          success: false,
-          message: err,
-        };
-      });
+      } else {
+        throw new HttpException(
+          'dto is invalid (no login or password, or they are not a strings)',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    });
   }
 
   async login(authDto: AuthDto) {
@@ -58,7 +56,8 @@ export class AuthService {
   private _createToken(authDto: AuthDto): any {
     return {
       // expires: process.env.TOKEN_EXPIRE_TIME + '',
-      token: this.jwtService.sign(JSON.parse(JSON.stringify(authDto))),
+      accessToken: this.jwtService.sign(JSON.parse(JSON.stringify(authDto))),
+      refreshToken: "refreshToken",
     };
   }
 }
