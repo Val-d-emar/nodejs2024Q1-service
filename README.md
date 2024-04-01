@@ -50,31 +50,9 @@ sudo docker run hello-world
 
 ## Building application
 
-1. Copy the file `.env.example` to `.env` and correct last. [Sure change](https://docs.docker.com/network/) `localhost` to yours real host ip address for work with Docker correctly and add line `APP_NAME=nodejs2024q1-service` for using my dockerhub repositories. Example:
+1. Copy the file `.env.example` to `.env` and correct last. [Sure change](https://docs.docker.com/network/) `0.0.0.0` to yours real host ip address for work with Docker correctly and save line `APP_NAME=nodejs2024q1-service` for using my dockerhub repositories.
 
-```bash
-PORT=4000
-APP_NAME=nodejs2024q1-service
-CRYPT_SALT=10
-JWT_SECRET_KEY=secret123123
-JWT_SECRET_REFRESH_KEY=secret123123
-TOKEN_EXPIRE_TIME=1h
-TOKEN_REFRESH_EXPIRE_TIME=24h
-TEST_MODE=NOAUT
-
-POSTGRES_HOST=192.168.100.115
-POSTGRES_PORT=15432
-POSTGRES_USER=dbuser
-POSTGRES_PASSWORD=dbpassword
-POSTGRES_DB=hsdatabase
-POSTGRES_MODE=DEV
-POSTGRES_EXPOSE=5433
-
-RUN_MIGRATIONS=true
-DOCKER_BUILDKIT=1
-```
-
-1. Build Docker image for DataBase:
+2. Build Docker image for DataBase:
 
 ```bash
 npm run db:docker:build  
@@ -86,13 +64,13 @@ npm run db:docker:build
 npm run app:docker:build  
 ```
 
-3. Build Docker compose App:
+4. Build Docker compose App:
 
 ```bash
 npm run docker:compose:build  
 ```
 
-4. Build Application localy:
+5. Build Application localy:
 
 ```bash
 npm run build  
