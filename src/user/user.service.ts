@@ -3,11 +3,17 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { AuthDto } from 'src/auth/dto/auth.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
-  create(dto: CreateUserDto) {
+  async create(dto: CreateUserDto) {
     // 'This action adds a new user';
+    const pass = await bcrypt.hash(
+      dto.password,
+      parseInt(process.env.CRYPT_SALT) || 10,
+    );
+    dto.password = pass;
     return User.createDto(dto);
   }
 
@@ -30,11 +36,21 @@ export class UserService {
     // `This action removes a #${id} user`;
     return User.removeId(id);
   }
-  findOneBy(authDto: AuthDto) {
+  async findOneBy(authDto: AuthDto) {
     // `This action returns a #${id} user`
-    return User.findOneBy({
+    // return User.findOneBy({
+    //   login: authDto.login,
+    //   password: authDto.password,
+    // })
+    const users = await User.findBy({
       login: authDto.login,
-      password: authDto.password,
     });
+    for (const user of users) {
+      const isMatch = await bcrypt.compare(authDto.password, user.password);
+      if (isMatch) {
+        return user;
+      }
+    }
+    return null;
   }
 }

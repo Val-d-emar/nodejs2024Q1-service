@@ -9,11 +9,11 @@ dotenv.config();
 const logger = new LoggingService();
 
 process.on('unhandledRejection', (reason: Error | any) => {
-  logger.log(`Unhandled Rejection: ${reason.message || reason}`);
+  logger.error(`Unhandled Rejection: ${reason.message || reason}`);
   // throw new Error(reason.message || reason);
 });
 process.on('uncaughtException', (error: Error) => {
-  logger.log(`Uncaught Exception: ${error.message}`);
+  logger.error(`Uncaught Exception: ${error.message}`);
   // errorHandler.handleError(error);
 });
 

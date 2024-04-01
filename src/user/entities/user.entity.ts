@@ -4,6 +4,7 @@ import { IsNumber, IsString } from 'class-validator';
 import { appError } from 'src/errors';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 import { v4 } from 'uuid';
+import * as bcrypt from 'bcrypt';
 
 @Entity({ name: 'user' })
 export class User extends BaseEntity {
@@ -71,10 +72,16 @@ export class User extends BaseEntity {
     return User.findOneId(id).then((user) => user.remove());
   }
   static async updatePassword(id: string, dto: object) {
-    return User.findOneId(id).then((user) => {
-      if (user.password !== dto['oldPassword']) {
+    return User.findOneId(id).then(async (user) => {
+      // if (user.password !== dto['oldPassword']) {
+      //   appError('oldPassword is wrong', HttpStatus.FORBIDDEN);
+      // }
+
+      const isMatch = await bcrypt.compare(dto['oldPassword'], user.password);
+      if (!isMatch) {
         appError('oldPassword is wrong', HttpStatus.FORBIDDEN);
       }
+
       user.password = dto['newPassword'];
       user.version++;
       user.updatedAt = Date.now();
