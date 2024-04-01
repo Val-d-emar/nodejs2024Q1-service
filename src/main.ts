@@ -36,6 +36,10 @@ async function bootstrap() {
   app.use((req, res, next) => {
     const send = res.send;
     res.send = (body) => {
+      if (req?.body?.password) req.body.password = '********';
+      if (req?.body?.oldPassword) req.body.oldPassword = '********';
+      if (req?.body?.newPassword) req.body.newPassword = '********';
+      if (body?.password) body.password = '********';
       logger.debug(
         `${req.method} ${req.originalUrl} ${JSON.stringify(req.body)} => ${res.statusCode} ${body}`,
       );

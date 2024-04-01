@@ -1,92 +1,95 @@
-// import { Injectable, NestMiddleware } from '@nestjs/common';
+import { ConsoleLogger, Injectable, LogLevel } from '@nestjs/common';
+import { Console } from 'node:console';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 
-import { ConsoleLogger, Injectable, LoggerService } from '@nestjs/common';
+const levels: LogLevel[] = [
+  'log',
+  'error',
+  'warn',
+  'debug',
+  'verbose',
+  'fatal',
+];
 
 @Injectable()
-// export class LoggingService extends ConsoleLogger {
-export class LoggingService implements LoggerService {
+export class LoggingService extends ConsoleLogger {
+  // export class LoggingService implements LoggerService {
   // private logger = new Logger('HTTP');
-  private logger = new ConsoleLogger('HTTP');
+  // private logger = new ConsoleLogger('HTTP');
 
   // private logger = console;
 
   /**
    * Write a 'log' level log.
    */
+  private console: Console;
+  constructor(context?: string) {
+    super(context);
+    if (process.env.LOG_LEVEL) {
+      const level = parseInt(process.env.LOG_LEVEL) || 3;
+      this.setLogLevels(levels.slice(0, level));
+    }
+    if (process.env.LOG_TO_FILE === 'true') {
+      const log_path = process.env.LOG_FILE_PATH || '/var/log';
+      const app_name = process.env.APP_NAME || 'app';
+      const output = fs.createWriteStream(
+        path.join(log_path, `${app_name}_warn.log`),
+      );
+      const errorOutput = fs.createWriteStream(
+        path.join(log_path, `${app_name}_err.log`),
+      );
+      // Custom simple logger
+      this.console = new Console({ stdout: output, stderr: errorOutput });
+    } else {
+      const output = fs.createWriteStream('/dev/null');
+      this.console = new Console({ stdout: output, stderr: output });
+    }
+  }
+
   log(message: any, ...optionalParams: any[]) {
-    this.logger.log(message, ...optionalParams);
+    // this.logger.log(message, ...optionalParams);
+    super.log(message, ...optionalParams);
+    this.console.log(message, ...optionalParams);
   }
 
   /**
    * Write a 'fatal' level log.
    */
   fatal(message: any, ...optionalParams: any[]) {
-    // this.logger.fatal(message, ...optionalParams);
-    this.logger.log(message, ...optionalParams);
+    super.fatal(message, ...optionalParams);
+    this.console.log(message, ...optionalParams);
   }
 
   /**
    * Write an 'error' level log.
    */
   error(message: any, ...optionalParams: any[]) {
-    this.logger.error(message, ...optionalParams);
+    super.error(message, ...optionalParams);
+    this.console.log(message, ...optionalParams);
   }
 
   /**
    * Write a 'warn' level log.
    */
   warn(message: any, ...optionalParams: any[]) {
-    this.logger.warn(message, ...optionalParams);
+    super.warn(message, ...optionalParams);
+    this.console.log(message, ...optionalParams);
   }
 
   /**
    * Write a 'debug' level log.
    */
   debug(message: any, ...optionalParams: any[]) {
-    this.logger.debug(message, ...optionalParams);
+    super.debug(message, ...optionalParams);
+    this.console.log(message, ...optionalParams);
   }
 
   /**
    * Write a 'verbose' level log.
    */
   verbose(message: any, ...optionalParams: any[]) {
-    // this.logger.verbose(message, ...optionalParams);
-    this.logger.log(message, ...optionalParams);
+    super.verbose(message, ...optionalParams);
+    this.console.log(message, ...optionalParams);
   }
 }
-
-// import { NestMiddleware } from '@nestjs/common';
-// import { Request, Response, NextFunction } from 'express';
-
-// @Injectable()
-// export class LoggingMiddleware implements NestMiddleware {
-//   constructor(private readonly logger: LoggingService) {}
-//   // resDotSendInterceptor = (res, send) => (content) => {
-//   //   res.contentBody = content;
-//   //   res.send = send;
-//   //   res.send(content);
-//   //   return res.send;
-//   // };
-//   use(request: Request, response: Response, next: NextFunction) {
-//     // const { method, originalUrl: url } = request;
-//     // response.send = this.resDotSendInterceptor(response, response.send);
-//     // response.on('finish', () => {
-//     //   // const { statusCode } = response;
-//     //   // const contentLength = response.get('content-length');
-//     //   const send = response.send;
-//     //   response.send = (c) => {
-//     //     // this.logger.log(`Code: ${response.statusCode} Body: ${c}`);
-//     //     this.logger.log(
-//     //       `${method} ${url} ${JSON.stringify(request.body)} - ${response.statusCode} ${JSON.stringify(c)}`,
-//     //     );
-//     //     response.send = send;
-//     //     return response.send(c);
-//     //   };
-//     //   // this.logger.log(
-//     //   //   `${method} ${url} ${JSON.stringify(request.body)} - ${response.statusCode} ${JSON.stringify(response)}`,
-//     //   // );
-//     // });
-
-//     next();
-//   }
-// }

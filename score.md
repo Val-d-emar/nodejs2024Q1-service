@@ -21,7 +21,7 @@
 
 - [X] **+30** Route `/auth/signup` implemented correctly, related logic is divided between controller and corresponding service
 - [X] **+30** Route `/auth/login` has been implemented, related logic is divided between controller and corresponding service
-- [ ] **+10** `User` `password` saved into database as hash
+- [X] **+10** `User` `password` saved into database as hash
 - [X] **+20** Access Token is implemented,`JWT` payload contains `userId` and `login`, secret key is saved in `.env`.
 - [X] **+40** Authentication is required for the access to all routes except `/auth/signup`, `/auth/login`, `/doc` and `/`.
 - [X] **+10** Separate module is implemented **within application scope** to check that all requests to all routes except mentioned above contain required JWT token
@@ -30,11 +30,11 @@
 
 # 1) Logging & Error Handling:
 
-- [ ] **+20** Logs are written to a file.
+- [X] **+20** Logs are written to a file.
 - [ ] **+10** Logs files are rotated with size.
 - [ ] **+10** Add environment variable to specify max file size.
-- [ ] **+10** Error logs are written to a separate file (either only to a separate file or in addition to logging into a common file).
-- [ ] **+20** Add environment variable to specify logging level and corresponding functionality.
+- [X] **+10** Error logs are written to a separate file (either only to a separate file or in addition to logging into a common file).
+- [X] **+20** Add environment variable to specify logging level and corresponding functionality.
   Logs with configured level to be registered as well as other higher priority levels. For example if you set level 2, all messages with levels 0, 1 and 2 should be logged. You should use Nest.js logging levels.
 
 # 2) Authentication and Authorization:
