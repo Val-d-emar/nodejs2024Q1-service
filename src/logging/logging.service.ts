@@ -33,12 +33,24 @@ export class LoggingService extends ConsoleLogger {
     if (process.env.LOG_TO_FILE === 'true') {
       const log_path = process.env.LOG_FILE_PATH || '/var/log';
       const app_name = process.env.APP_NAME || 'app';
-      const output = fs.createWriteStream(
-        path.join(log_path, `${app_name}_warn.log`),
-      );
-      const errorOutput = fs.createWriteStream(
-        path.join(log_path, `${app_name}_err.log`),
-      );
+      const logFile = path.join(log_path, `${app_name}_warn.log`);
+      const errFile = path.join(log_path, `${app_name}_err.log`);
+      const maxSize = parseInt(process.env.LOG_FILE_MAX_SIZE_KB) || 1024;
+      // Rotation
+      try {
+        const { size: logSize } = fs.statSync(logFile);
+        if (logSize / 1024 > maxSize) {
+          fs.renameSync(logFile, `${logFile}.${Date.now()}`);
+        }
+        const { size: errSize } = fs.statSync(errFile);
+        if (errSize / 1024 > maxSize) {
+          fs.renameSync(errFile, `${errFile}.${Date.now()}`);
+        }
+      } catch {
+        // File doesn't exists
+      }
+      const output = fs.createWriteStream(logFile);
+      const errorOutput = fs.createWriteStream(errFile);
       // Custom simple logger
       this.console = new Console({ stdout: output, stderr: errorOutput });
     } else {

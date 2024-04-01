@@ -31,8 +31,8 @@
 # 1) Logging & Error Handling:
 
 - [X] **+20** Logs are written to a file.
-- [ ] **+10** Logs files are rotated with size.
-- [ ] **+10** Add environment variable to specify max file size.
+- [X] **+10** Logs files are rotated with size.
+- [X] **+10** Add environment variable to specify max file size.
 - [X] **+10** Error logs are written to a separate file (either only to a separate file or in addition to logging into a common file).
 - [X] **+20** Add environment variable to specify logging level and corresponding functionality.
   Logs with configured level to be registered as well as other higher priority levels. For example if you set level 2, all messages with levels 0, 1 and 2 should be logged. You should use Nest.js logging levels.
