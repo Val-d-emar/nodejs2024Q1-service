@@ -51,126 +51,26 @@ sudo docker run hello-world
 ## Building application
 
 1. Copy the file `.env.example` to `.env` and correct last. [Sure change](https://docs.docker.com/network/) `0.0.0.0` to yours real host ip address for work with Docker correctly and save line `APP_NAME=nodejs2024q1-service` for using my dockerhub repositories.
-
 2. Build Docker image for DataBase:
 
 ```bash
 npm run db:docker:build  
 ```
 
-3. Build Docker image for App (you have to had an [docker-hub](https://hub.docker.com) profile):
-
-```bash
-npm run app:docker:build  
-```
-
-4. Build Docker compose App:
-
-```bash
-npm run docker:compose:build  
-```
-
-5. Build Application localy:
-
-```bash
-npm run build  
-```
-
-## Migrate database
-
-1. When you build Dockerfile db will create automatically from saved db.sql. You can make it manually for add to container:
-
-```bash
-npm run migration:generate:sql
-cp src/db/migration/db.sql.schema src/db/pg/db.sql
-```
-
-2. You can generate and run migrate script manually if you have any change in db:
-
-```bash
-npm run migration:generate
-npm run migration:run  
-```
-
 ## Running application
 
-1. To run App locally at the host (the DataBase must be running firstly):
+* To run App locally at the host (the DataBase must be running firstly):
 
 ```bash
 npm run db:docker:run
 npm start  
 ```
 
-2. To run App and db from the Docker container separately:
-
-```bash
-npm run db:docker:run
-npm run app:docker:run  
-```
-
-3. To scan vulnerabilities:
-
-```bash
-npm install -g snyk
-snyk auth # registration token create
-npm run db:docker:scan  
-npm run app:docker:scan  
-```
-
-4. To stop containers and delete its (it needs before to compose start):
-
-```bash
-npm run app:docker:stop  
-npm run db:docker:stop  
-npm run docker:container:prune
-```
-
-5. To pull images from [Docker Hub](https://hub.docker.com) (you have to had a [Docker Hub](https://hub.docker.com) profile):
-
-```bash
-docker pull valdemarsu/nodejs2024q1-service-db:latest
-docker pull valdemarsu/nodejs2024q1-service-app:latest
-```
-
-6. To run App and db from the Docker compose interactive:
-
-```bash
-npm run docker:compose:up  
-```
-
-Press Ctrl+C to stop it.
-
-7. To stop App and db from the Docker compose and delete its:
-
-```bash
-npm run docker:compose:down
-```
-
-8. To run App and db from the Docker compose like daemon:
-
-```bash
-npm run docker:compose:up -- -d
-```
-
-9. To run App from the Docker compose for application is restarting upon changes implemented into `src` folder:
-
-```bash
-npm run docker:compose:watch  
-```
-
-Press Ctrl+C to stop it.
-
-After starting the app on port (4000 as default) you can open
-in your browser OpenAPI documentation by typing [http://127.0.0.1:{PORT}/docs](http://127.0.0.1:4000/docs).
-
-Service listen on PORT `4000` by default, PORT value is stores in `.env` file and can be changes.
-For more information about OpenAPI/Swagger please read [documentation](https://swagger.io/).
-
 ## Testing (App must be running firstly)
 
 After application running ***[open new terminal](https://gurugenius.ru/kak-otkryt-terminal/)*** and enter:
 
-1. To run all tests without authorization
+* To run all tests without authorization
 
 ```bash
 npm run test:auth
@@ -179,6 +79,8 @@ npm run test:auth
 **Hints**
 
 - You can use swagger for test api by [http://127.0.0.1:{PORT}/docs](http://127.0.0.1:4000/docs) URL too.
+- Service listen on PORT `4000` by default, PORT value is stores in `.env` file and can be changes.
+  For more information about OpenAPI/Swagger please read [documentation](https://swagger.io/).
 
 # **The application API operate with the following resources:**
 

@@ -9,7 +9,7 @@ ARG POSTGRES_EXPOSE=5432
 # ENV POSTGRES_PASSWORD changeitwhenrun
 # ENV POSTGRES_DB changeitwhenrun
 WORKDIR /var/lib/postgresql/data
-VOLUME [ "db_data:/var/lib/postgresql/data", "/var/log" ]
+VOLUME [ "/var/lib/postgresql/data", "/var/log" ]
 # RUN cp /usr/share/postgresql/postgresql.conf.sample /etc/postgresql/postgresql.conf
 # RUN sed -i "s/#port = 5432/port = ${POSTGRES_EXPOSE}/g" /etc/postgresql/postgresql.conf
 ENV PGPORT $POSTGRES_EXPOSE

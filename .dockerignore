@@ -10,3 +10,5 @@ dist
 src/db/pg
 db_data
 logs
+*.log.*
+*log
