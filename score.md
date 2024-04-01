@@ -1,6 +1,12 @@
 1. Task: [REST service: Logging &amp; Error Handling and Authentication and Authorization](https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/logging-error-authentication-authorization/assignment.md#2-authentication-and-authorization-1)
-2. Screenshots:
+2. Screenshots:![tests](./doc/screenshots/1.png?raw=true "https://github.com/Val-d-emar/nodejs2024Q1-service/blob/dev/doc/screenshots/5.png?raw=true")
 3. Deploy:
+
+```bash
+docker pull valdemarsu/nodejs2024q1-service-app:latest
+docker pull valdemarsu/nodejs2024q1-service-db:latest
+```
+
 4. Done 02.04.2024 / deadline 02.04.2024
 5. Score: 310 / 340
 
@@ -43,11 +49,11 @@
 
 ## Forfeits
 
-- **-10** for each failing test
-  (for authentication and authorization  module tests to be run with `npm run test:auth` )
-- **-30% of max task score** Commits after deadline, except commits that affect only Readme.md, .gitignore, etc.
-- **-10 points** for each error either on `npm run lint` on the basis of the **local config** or for compilation errors on the basis of the **local tsconfig** (`errors` not `warnings`).
-- **-20** No separate development branch
-- **-20** No Pull Request
-- **-10** Pull Request description is incorrect
-- **-20** Less than 3 commits in the development branch, not including commits that make changes only to `Readme.md` or similar files (`tsconfig.json`, `.gitignore`, `.prettierrc.json`, etc.)
+- ~~**-10** for each failing test
+  (for authentication and authorization  module tests to be run with `npm run test:auth` )~~
+- ~~**-30% of max task score** Commits after deadline, except commits that affect only Readme.md, .gitignore, etc.~~
+- ~~**-10 points** for each error either on `npm run lint` on the basis of the **local config** or for compilation errors on the basis of the **local tsconfig** (`errors` not `warnings`).~~
+- ~~**-20** No separate development branch~~
+- ~~**-20** No Pull Request~~
+- ~~**-10** Pull Request description is incorrect~~
+- ~~**-20** Less than 3 commits in the development branch, not including commits that make changes only to `Readme.md` or similar files (`tsconfig.json`, `.gitignore`, `.prettierrc.json`, etc.)~~
