@@ -1,41 +1,59 @@
-1. Task: [REST Service](https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/rest-service/assignment.md)
-2. Screenshots:![tests](./doc/screenshots/1.png?raw=true "https://github.com/Val-d-emar/nodejs2024Q1-service/blob/dev/doc/screenshots/1.png?raw=true")
-3. Done 06.03.2024 / deadline 12.03.2024
-4. Score: 760 / 760
+1. Task: [REST service: Logging &amp; Error Handling and Authentication and Authorization](https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/logging-error-authentication-authorization/assignment.md#2-authentication-and-authorization-1)
+2. Screenshots:![tests](./doc/screenshots/1.png?raw=true "https://github.com/Val-d-emar/nodejs2024Q1-service/blob/dev/doc/screenshots/5.png?raw=true")
+3. Deploy:
 
-# Scoring: REST Service
+```bash
+docker pull valdemarsu/nodejs2024q1-service-app:latest
+docker pull valdemarsu/nodejs2024q1-service-db:latest
+```
+
+4. Done 02.04.2024 / deadline 02.04.2024
+5. Score: 310 / 340
+
+# REST service: Logging & Error Handling and Authentication and Authorization
 
 ## Basic Scope
 
-- [X] **+10** The repository with the application contains a `Readme.md` file containing detailed instructions for installing, running and using the application
-- [X] **+10** The application code that worked with `Users` instance divided into modules according to to its purpose and Nest.js architecture conventions (work with request and response in controller, business logic in service, etc.)
-- [X] **+10** The application code that worked with `Tracks` instance divided into modules according to to its purpose and Nest.js architecture conventions (work with request and response in controller, business logic in service, etc.)
-- [X] **+10** The application code that worked with `Albums` instance divided into modules according to to its purpose and Nest.js architecture conventions (work with request and response in controller, business logic in service, etc.)
-- [X] **+10** The application code that worked with `Artists` instance divided into modules according to to its purpose and Nest.js architecture conventions (work with request and response in controller, business logic in service, etc.)
-- [X] **+10** The application code that worked with `Favorites` instance divided into modules according to to its purpose and Nest.js architecture conventions (work with request and response in controller, business logic in service, etc.)
-- [X] **+10** For each successfully passed test
+# 1) Logging & Error Handling:
+
+- [X] **+20** Custom `LoggingService` is implemented and used for logging
+- [X] **+20** Custom `Exception Filter` is implemented and used for handling exceptions during request processing
+- [X] **+20** Logging for request (of at least `url`, `query parameters`, `body`) and response with `status code` is implemented.
+- [X] **+20** Error handling is implemented including sending response with an appropriate `http status code` and errors logging.
+- [X] **+10** Error handling  and logging is implemented for `uncaughtException` event.
+- [X] **+10** Error handling  and logging is implemented for `unhandledRejection` event.
+
+# 2) Authentication and Authorization:
+
+- [X] **+30** Route `/auth/signup` implemented correctly, related logic is divided between controller and corresponding service
+- [X] **+30** Route `/auth/login` has been implemented, related logic is divided between controller and corresponding service
+- [X] **+10** `User` `password` saved into database as hash
+- [X] **+20** Access Token is implemented,`JWT` payload contains `userId` and `login`, secret key is saved in `.env`.
+- [X] **+40** Authentication is required for the access to all routes except `/auth/signup`, `/auth/login`, `/doc` and `/`.
+- [X] **+10** Separate module is implemented **within application scope** to check that all requests to all routes except mentioned above contain required JWT token
 
 ## Advanced Scope
 
-- [X] **+10** PORT value is stored into `.env` file
-- [X] **+20** OpenAPI spec in `doc` folder corresponds with assignment
+# 1) Logging & Error Handling:
+
+- [X] **+20** Logs are written to a file.
+- [X] **+10** Logs files are rotated with size.
+- [X] **+10** Add environment variable to specify max file size.
+- [X] **+10** Error logs are written to a separate file (either only to a separate file or in addition to logging into a common file).
+- [X] **+20** Add environment variable to specify logging level and corresponding functionality.
+  Logs with configured level to be registered as well as other higher priority levels. For example if you set level 2, all messages with levels 0, 1 and 2 should be logged. You should use Nest.js logging levels.
+
+# 2) Authentication and Authorization:
+
+- [ ] **+30** Route `/auth/refresh` implemented correctly, related logic is divided between controller and corresponding service
 
 ## Forfeits
 
- ~~**-670** Changes in tests~~
-
- ~~**-30% of max task score** Commits after deadline (except commits that affect only Readme.md, .gitignore, etc.)~~
-
- ~~**-20** No separate development branch~~
-
- ~~**-20** No Pull Request~~
-
- ~~**-10** Pull Request description is incorrect~~
-
- ~~**-10** Every lint error after npm run lint using local config (errors, not warnings)~~
-
- ~~**-20** Less than 3 commits in the development branch, not including commits that make changes only to `Readme.md` or similar files (`tsconfig.json`, `.gitignore`, `.prettierrc.json`, etc.)~~
-
----
-
----
+- ~~**-10** for each failing test
+  (for authentication and authorization  module tests to be run with `npm run test:auth` )~~
+- ~~**-30% of max task score** Commits after deadline, except commits that affect only Readme.md, .gitignore, etc.~~
+- ~~**-10 points** for each error either on `npm run lint` on the basis of the **local config** or for compilation errors on the basis of the **local tsconfig** (`errors` not `warnings`).~~
+- ~~**-20** No separate development branch~~
+- ~~**-20** No Pull Request~~
+- ~~**-10** Pull Request description is incorrect~~
+- ~~**-20** Less than 3 commits in the development branch, not including commits that make changes only to `Readme.md` or similar files (`tsconfig.json`, `.gitignore`, `.prettierrc.json`, etc.)~~

@@ -1,98 +1,56 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordDto } from './dto/update-user.dto';
-import { validate } from 'uuid';
-import { Response } from 'express';
 import { User } from './entities/user.entity';
-import { DB } from 'src/db/db.service';
+import { AuthDto } from 'src/auth/dto/auth.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly db: DB) {}
-
-  create(dto: CreateUserDto) {
+  async create(dto: CreateUserDto) {
     // 'This action adds a new user';
-    this.db.users.push(new User(dto));
-    const user = this.db.users.at(-1);
-    return user.out();
+    const pass = await bcrypt.hash(
+      dto.password,
+      parseInt(process.env.CRYPT_SALT) || 10,
+    );
+    dto.password = pass;
+    return User.createDto(dto);
   }
 
   findAll() {
     // `This action returns all user`;
-    const usersOut = [];
-    this.db.users.forEach((user) => usersOut.push(user.out()));
-    return usersOut;
+    return User.findAll();
   }
 
-  findOne(id: string) {
+  async findOne(id: string) {
     // `This action returns a #${id} user`
-    if (!validate(id)) {
-      const error = new HttpException(
-        'userId is invalid (not uuid)',
-        HttpStatus.BAD_REQUEST,
-      );
-      throw error;
-    }
-    const user = this.db.users.find((user) => user.id === id);
-    if (!user) {
-      const error = new HttpException(
-        "record with id === userId doesn't exist",
-        HttpStatus.NOT_FOUND,
-      );
-      throw error;
-    }
-    return user.out();
+    return User.findOneId(id).then((u) => u.out());
   }
 
   update(id: string, dto: UpdatePasswordDto) {
     // `This action updates a #${id} user`;
-    if (!validate(id)) {
-      const error = new HttpException(
-        'userId is invalid (not uuid)',
-        HttpStatus.BAD_REQUEST,
-      );
-      throw error;
-    }
-    const user = this.db.users.find((user) => user.id === id);
-    if (!user) {
-      const error = new HttpException(
-        "record with id === userId doesn't exist",
-        HttpStatus.NOT_FOUND,
-      );
-      throw error;
-    }
-    if (user.password !== dto.oldPassword) {
-      const error = new HttpException(
-        'oldPassword is wrong',
-        HttpStatus.FORBIDDEN,
-      );
-      throw error;
-    }
-    user.password = dto.newPassword;
-    user.version++;
-    user.updatedAt = Date.now();
-    return user.out();
+    return User.updatePassword(id, dto);
   }
 
-  remove(id: string, res: Response) {
+  remove(id: string) {
     // `This action removes a #${id} user`;
-    if (!validate(id)) {
-      const error = new HttpException(
-        'userId is invalid (not uuid)',
-        HttpStatus.BAD_REQUEST,
-      );
-      throw error;
+    return User.removeId(id);
+  }
+  async findOneBy(authDto: AuthDto) {
+    // `This action returns a #${id} user`
+    // return User.findOneBy({
+    //   login: authDto.login,
+    //   password: authDto.password,
+    // })
+    const users = await User.findBy({
+      login: authDto.login,
+    });
+    for (const user of users) {
+      const isMatch = await bcrypt.compare(authDto.password, user.password);
+      if (isMatch) {
+        return user;
+      }
     }
-    const index = this.db.users.findIndex((user) => user.id === id);
-    if (index === -1) {
-      const error = new HttpException(
-        "record with id === userId doesn't exist",
-        HttpStatus.NOT_FOUND,
-      );
-      throw error;
-    }
-    this.db.users.splice(index, 1);
-    res.status(HttpStatus.NO_CONTENT).send();
-    return;
+    return null;
   }
 }

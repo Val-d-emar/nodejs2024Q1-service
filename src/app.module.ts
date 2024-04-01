@@ -1,4 +1,9 @@
-import { Module } from '@nestjs/common';
+import {
+  // MiddlewareConsumer,
+  Module,
+  // NestModule,
+  // RequestMethod,
+} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
@@ -6,18 +11,41 @@ import { TrackModule } from './track/track.module';
 import { ArtistModule } from './artist/artist.module';
 import { AlbumModule } from './album/album.module';
 import { FavsModule } from './favs/favs.module';
-import { DBModule } from './db/db.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { dbAsyncConfig } from './db/db.config.service';
+import { ConfigModule } from '@nestjs/config';
+import { LoggingModule } from './logging/logging.module';
+import { AuthModule } from './auth/auth.module';
+import { GuardModule } from './guard/guard.module';
+import { HttpErrorFilter } from './app.filter';
+import { LoggingService } from './logging/logging.service';
 
 @Module({
   imports: [
-    DBModule,
     UserModule,
     TrackModule,
     ArtistModule,
     AlbumModule,
     FavsModule,
+    ConfigModule.forRoot({
+      envFilePath: ['.env'],
+      isGlobal: true,
+      cache: true,
+    }),
+    TypeOrmModule.forRootAsync(dbAsyncConfig),
+    LoggingModule,
+    AuthModule,
+    GuardModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, HttpErrorFilter, LoggingService],
 })
 export class AppModule {}
+// export class AppModule implements NestModule {
+//   configure(consumer: MiddlewareConsumer) {
+//     consumer
+//       .apply(LoggingMiddleware)
+//       .forRoutes({ path: '*', method: RequestMethod.ALL });
+//   }
+//   // logger = new LoggingService();
+// }

@@ -9,13 +9,12 @@ import {
   UsePipes,
   Put,
   ParseUUIDPipe,
-  Res,
   HttpStatus,
+  HttpCode,
 } from '@nestjs/common';
 import { TrackService } from './track.service';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
-import { Response } from 'express';
 
 @Controller('track')
 export class TrackController {
@@ -44,9 +43,8 @@ export class TrackController {
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseUUIDPipe) id: string, @Res() res: Response) {
-    this.trackService.remove(id);
-    res.status(HttpStatus.NO_CONTENT).send();
-    return;
+  @HttpCode(HttpStatus.NO_CONTENT)
+  remove(@Param('id', ParseUUIDPipe) id: string) {
+    return this.trackService.remove(id);
   }
 }

@@ -9,13 +9,12 @@ import {
   UsePipes,
   ParseUUIDPipe,
   HttpStatus,
-  Res,
   Put,
+  HttpCode,
 } from '@nestjs/common';
 import { ArtistService } from './artist.service';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
-import { Response } from 'express';
 
 @Controller('artist')
 export class ArtistController {
@@ -47,9 +46,8 @@ export class ArtistController {
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseUUIDPipe) id: string, @Res() res: Response) {
-    this.artistService.remove(id);
-    res.status(HttpStatus.NO_CONTENT).send();
-    return;
+  @HttpCode(HttpStatus.NO_CONTENT)
+  remove(@Param('id', ParseUUIDPipe) id: string) {
+    return this.artistService.remove(id);
   }
 }
