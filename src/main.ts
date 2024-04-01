@@ -6,14 +6,14 @@ import swaggerUi = require('swagger-ui-express');
 import * as dotenv from 'dotenv';
 import { LoggingService } from './logging/logging.service';
 dotenv.config();
+const logger = new LoggingService();
 
 process.on('unhandledRejection', (reason: Error | any) => {
-  console.log(`Unhandled Rejection: ${reason.message || reason}`);
-
-  throw new Error(reason.message || reason);
+  logger.log(`Unhandled Rejection: ${reason.message || reason}`);
+  // throw new Error(reason.message || reason);
 });
 process.on('uncaughtException', (error: Error) => {
-  console.log(`Uncaught Exception: ${error.message}`);
+  logger.log(`Uncaught Exception: ${error.message}`);
   // errorHandler.handleError(error);
 });
 
@@ -26,7 +26,8 @@ console.log('Starting on port:', PORT);
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const logger = new LoggingService();
+  // const logger = new LoggingService();
+  app.useLogger(logger);
 
   // Загрузка файла документации
   const swaggerDocument = YAML.load(path.join(__dirname, '../doc', 'api.yaml'));

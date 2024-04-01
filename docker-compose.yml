@@ -78,7 +78,8 @@ services:
       - appnet
 
     volumes:
-      - ./logs:/var/log
+      # - ./logs:/var/log
+      - logs:/var/log
 
 
   # Второй сервис (контейнер): база данных.
@@ -111,8 +112,10 @@ services:
     # данные для подключения к базе данных.
 
     volumes:
-      - ./db_data:/var/lib/postgresql/data
-      - ./logs:/var/log
+      # - ./db_data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
+      # - ./logs:/var/log
+      - logs:/var/log
 
     # Команда, которую нужно запустить после создания образа.
  
@@ -130,9 +133,9 @@ services:
 # которые будут доступны внутри службы.
 volumes:
   db_data:
-     driver: local
+    #  driver: local
   logs:
-     driver: local
+    #  driver: local
 
 networks:
   appnet:

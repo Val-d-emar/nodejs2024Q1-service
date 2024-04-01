@@ -11,11 +11,11 @@
 # 1) Logging & Error Handling:
 
 - [X] **+20** Custom `LoggingService` is implemented and used for logging
-- [ ] **+20** Custom `Exception Filter` is implemented and used for handling exceptions during request processing
+- [X] **+20** Custom `Exception Filter` is implemented and used for handling exceptions during request processing
 - [X] **+20** Logging for request (of at least `url`, `query parameters`, `body`) and response with `status code` is implemented.
-- [ ] **+20** Error handling is implemented including sending response with an appropriate `http status code` and errors logging.
-- [ ] **+10** Error handling  and logging is implemented for `uncaughtException` event.
-- [ ] **+10** Error handling  and logging is implemented for `unhandledRejection` event.
+- [X] **+20** Error handling is implemented including sending response with an appropriate `http status code` and errors logging.
+- [X] **+10** Error handling  and logging is implemented for `uncaughtException` event.
+- [X] **+10** Error handling  and logging is implemented for `unhandledRejection` event.
 
 # 2) Authentication and Authorization:
 

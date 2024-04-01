@@ -117,6 +117,24 @@ security:
   - bearerAuth: []
 
 paths:
+  /{errorId}:
+    parameters:
+      - name: errorId
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - Test
+      summary: Test
+      description: Test
+      responses:
+        200:
+          description: Successful operation
+        400:
+          description: Bad request
+
   /auth/login:
     post:
       tags:
