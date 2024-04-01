@@ -14,12 +14,6 @@ const levels: LogLevel[] = [
 
 @Injectable()
 export class LoggingService extends ConsoleLogger {
-  // export class LoggingService implements LoggerService {
-  // private logger = new Logger('HTTP');
-  // private logger = new ConsoleLogger('HTTP');
-
-  // private logger = console;
-
   /**
    * Write a 'log' level log.
    */
@@ -62,7 +56,11 @@ export class LoggingService extends ConsoleLogger {
   log(message: any, ...optionalParams: any[]) {
     // this.logger.log(message, ...optionalParams);
     super.log(message, ...optionalParams);
-    this.console.log(message, ...optionalParams);
+    this.console.log(
+      new Date().toISOString().replace(/T/, ' ').replace(/Z/, ' '),
+      message,
+      ...optionalParams,
+    );
   }
 
   /**
@@ -70,7 +68,11 @@ export class LoggingService extends ConsoleLogger {
    */
   fatal(message: any, ...optionalParams: any[]) {
     super.fatal(message, ...optionalParams);
-    this.console.log(message, ...optionalParams);
+    this.console.log(
+      new Date().toISOString().replace(/T/, ' ').replace(/Z/, ' '),
+      message,
+      ...optionalParams,
+    );
   }
 
   /**
@@ -78,7 +80,11 @@ export class LoggingService extends ConsoleLogger {
    */
   error(message: any, ...optionalParams: any[]) {
     super.error(message, ...optionalParams);
-    this.console.log(message, ...optionalParams);
+    this.console.log(
+      new Date().toISOString().replace(/T/, ' ').replace(/Z/, ' '),
+      message,
+      ...optionalParams,
+    );
   }
 
   /**
@@ -86,7 +92,11 @@ export class LoggingService extends ConsoleLogger {
    */
   warn(message: any, ...optionalParams: any[]) {
     super.warn(message, ...optionalParams);
-    this.console.log(message, ...optionalParams);
+    this.console.log(
+      new Date().toISOString().replace(/T/, ' ').replace(/Z/, ' '),
+      message,
+      ...optionalParams,
+    );
   }
 
   /**
@@ -94,7 +104,11 @@ export class LoggingService extends ConsoleLogger {
    */
   debug(message: any, ...optionalParams: any[]) {
     super.debug(message, ...optionalParams);
-    this.console.log(message, ...optionalParams);
+    this.console.log(
+      new Date().toISOString().replace(/T/, ' ').replace(/Z/, ' '),
+      message,
+      ...optionalParams,
+    );
   }
 
   /**
@@ -102,6 +116,10 @@ export class LoggingService extends ConsoleLogger {
    */
   verbose(message: any, ...optionalParams: any[]) {
     super.verbose(message, ...optionalParams);
-    this.console.log(message, ...optionalParams);
+    this.console.log(
+      new Date().toISOString().replace(/T/, ' ').replace(/Z/, ' '),
+      message,
+      ...optionalParams,
+    );
   }
 }

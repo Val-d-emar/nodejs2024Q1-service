@@ -1,8 +1,8 @@
 1. Task: [REST service: Logging &amp; Error Handling and Authentication and Authorization](https://github.com/AlreadyBored/nodejs-assignments/blob/main/assignments/logging-error-authentication-authorization/assignment.md#2-authentication-and-authorization-1)
 2. Screenshots:
 3. Deploy:
-4. Done 01.04.2024 / deadline 02.04.2024
-5. Score: 340 / 340
+4. Done 02.04.2024 / deadline 02.04.2024
+5. Score: 310 / 340
 
 # REST service: Logging & Error Handling and Authentication and Authorization
 
